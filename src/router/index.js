@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import Login from '../views/Login.vue'
 import Top from '../views/Top.vue'
+import Form from '../views/Form.vue'
 
 const routes = [
   {
@@ -13,6 +14,11 @@ const routes = [
     path: '/top',
     name: 'Top',
     component: Top
+  },
+  {
+    path: '/form',
+    name: 'Form',
+    component: Form
   }
 ]
 
