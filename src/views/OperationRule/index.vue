@@ -19,7 +19,8 @@
     name: 'OperationRuleIndex',
     data() {
       return {
-        operationRuleList: []
+        operationRuleList: [],
+        userPermissions: []
       }
     },
     created() {
@@ -30,8 +31,10 @@
         try {
           const response = await axios.get('http://localhost:8000/operation-rule/index/')
           console.log('APIレスポンス:', response.data)
-          this.operationRuleList = response.data
+          this.operationRuleList = response.data.operation_rules;
+          this.userPermissions = response.data.user_permissions;
           console.log(this.operationRuleList)
+          console.log(this.userPermissions)
         } catch (error) {
           console.error('APIエラー:', error.response ? error.response.data : error.message)
         }

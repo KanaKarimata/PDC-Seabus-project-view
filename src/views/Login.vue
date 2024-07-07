@@ -85,12 +85,14 @@ export default {
           this.$router.push('/top');
         } catch (error) {
           if (error.response) {
-            // サーバーからのエラーレスポンス
-            for (const property in error.response.data) {
-              this.errors.push(`${property}: ${error.response.data[property]}`);
+            if (error.response.data.non_field_errors) {
+              this.errors.push(...error.response.data.non_field_errors);
+            } else {
+              for (const property in error.response.data) {
+                this.errors.push(`${property}: ${error.response.data[property]}`);
+              }
             }
           } else {
-            // エラー処理
             this.errors.push('エラーが発生しました。再度お試しください。');
             console.error('ログインエラー:', error);
           }

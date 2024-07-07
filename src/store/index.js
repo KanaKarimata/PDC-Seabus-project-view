@@ -47,17 +47,7 @@ export default createStore({
         commit('setTokens', response.data);
       } catch (error) {
         console.error('Login error:', error);
-      }
-    },
-    async refreshToken({ commit, state }) {
-      try {
-        const response = await axiosInstance.post('/token/refresh/', {
-          refresh: state.refreshToken,
-        });
-        commit('setTokens', response.data);
-      } catch (error) {
-        commit('clearTokens');
-        console.error('Refresh token error:', error);
+        throw error;
       }
     },
     logout({ commit }) {
