@@ -108,8 +108,9 @@
             publish_start_date: this.publish_start_date,
             publish_end_date: this.publish_end_date
           })
+          console.log('APIレスポンス:', response.data)
         } catch (error) {
-          
+          console.error('APIエラー:', error)
         }
       },
     }
