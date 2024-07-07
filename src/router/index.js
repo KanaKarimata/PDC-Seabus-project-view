@@ -2,7 +2,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import Login from '../views/Login.vue'
 import Top from '../views/Top.vue'
-import Form from '../views/CreateForm.vue'
+import Form from '../views/TimeSchedule/CreateForm.vue'
+import OperationRuleIndex from '../views/OperationRule/index.vue'
+import TimeScheduleManagement from '../views/TimeSchedule/management.vue'
 
 const routes = [
   {
@@ -19,6 +21,16 @@ const routes = [
     path: '/create-form',
     name: 'CreateForm',
     component: Form
+  },
+  {
+    path: '/operation-rule/index',
+    name: 'OperationRuleIndex',
+    component: OperationRuleIndex
+  },
+  {
+    path: '/operation-rule/:id/time-schedule-management',
+    name: 'TimeScheduleManagement',
+    component: TimeScheduleManagement
   }
 ]
 

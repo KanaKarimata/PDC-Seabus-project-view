@@ -60,9 +60,9 @@
 <script>
   import axios from 'axios'
   import { mapGetters } from 'vuex';
-  import TimePicker from '../components/TimePicker.vue';
-  import DateTimeRangePicker from '../components/DateTimeRangePicker.vue';
-  import ScheduleDetailForm from '../components/ScheduleDetailForm.vue'
+  import TimePicker from '../../components/TimePicker.vue';
+  import DateTimeRangePicker from '../../components/DateTimeRangePicker.vue';
+  import ScheduleDetailForm from '../../components/ScheduleDetailForm.vue'
 
   export default {
     name: 'CreateForm',
