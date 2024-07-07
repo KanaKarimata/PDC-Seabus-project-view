@@ -32,7 +32,7 @@
               <div class="field">
                 <label>公開日時</label>
                   <div class="control column is-8">
-                    <DateTimeRangePicker v-model="publish_start_date"/>
+                    <DateTimeRangePicker v-model="publish_start_date" @dateTimeRangeSelected="getDateTimeRangeSelected"/>
                   </div>
               </div>
 
@@ -75,8 +75,7 @@
       return {
         time_schedule_name: '',
         out_of_service_flg: false,
-        scheduleDetails: Array(20).fill().map(() => ({
-          time_schedule_name: '',
+        time_schedule_detail: Array(20).fill().map(() => ({
           departure_time: '',
           operation_status_id: '',
           operation_status_detail_id: '',
@@ -90,27 +89,32 @@
     },
     methods: {
       handleUpdateDetails(details) {
-        this.scheduleDetails = details;
+        this.time_schedule_detail = details;
         console.log('handleUpdateDetails')
         console.log(details)
+      },
+      getDateTimeRangeSelected(dateTimeRange) {
+        this.publish_start_date = dateTimeRange.selectedStartDateTime
+        this.publish_end_date = dateTimeRange.selectedEndDateTime
       },
       async registerOnly() {
         console.log('++++++++registerOnly++++++')
         console.log(this.time_schedule_name)
-        console.log(this.scheduleDetails)
+        console.log(this.publish_start_date)
+        console.log(this.publish_end_date)
 
         try {
-          const response = await axios.post('/time-schedule-create', {
+          const response = await axios.post('http://localhost:8000/operation-rule/time-schedule-create/', {
             time_schedule_name: this.time_schedule_name,
             out_of_service_flg: this.out_of_service_flg,
-            scheduleDetails: this.scheduleDetails,
+            time_schedule_detail: this.time_schedule_detail,
             publish_status_id: 0,
             publish_start_date: this.publish_start_date,
             publish_end_date: this.publish_end_date
           })
           console.log('APIレスポンス:', response.data)
         } catch (error) {
-          console.error('APIエラー:', error)
+          console.error('APIエラー:', error.response ? error.response.data : error.message)
         }
       },
     }

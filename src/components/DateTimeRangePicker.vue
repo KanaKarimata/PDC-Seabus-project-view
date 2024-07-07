@@ -7,15 +7,16 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
 import bulmaCalendar from 'bulma-calendar';
 
 export default {
   name: 'DateTimeRangePicker',
   data() {
     return {
-      selectedStartDateTime: '',
-      selectedEndDateTime: ''
+      dateTimeRange: {
+        selectedStartDateTime: '',
+        selectedEndDateTime: ''
+      }
     }
   },
   mounted() {
@@ -44,11 +45,13 @@ export default {
 
       // 選択された範囲のイベントリスナーを追加
       datePicker.on('select', (datepicker) => {
-        console.log('Start date:', datepicker.data.startDate);
-        console.log('End date:', datepicker.data.endDate);
+        console.log('Start date:', datepicker.data.startDate)
+        console.log('End date:', datepicker.data.endDate)
+        this.dateTimeRange.selectedStartDateTime = datepicker.data.startDate
+        this.dateTimeRange.selectedEndDateTime = datepicker.data.endDate
+        this.$emit('dateTimeRangeSelected', this.dateTimeRange)
       });
     },
-    ...mapActions(['updateSelectedTime', 'updateSelectedEndDateTime'])
   },
 };
 </script>
