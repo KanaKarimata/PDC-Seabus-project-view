@@ -7,35 +7,40 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
 import bulmaCalendar from 'bulma-calendar';
 
 export default {
   name: 'TimePicker',
-  emits: ['update:time'],
-  setup(props, { emit }) {
-    const timepicker = ref(null);
+  mounted() {
+    this.initializePicker();
+  },
+  methods: {
+    initializePicker() {
+      const timePickerElement = this.$refs.timepicker;
 
-    onMounted(() => {
-      if (timepicker.value) {
-        const calendar = bulmaCalendar.attach(timepicker.value, {
-          type: 'time',
-          displayMode: 'dialog'
-        });
-
-        calendar.forEach(instance => {
-          instance.on('select', date => {
-            const time = date ? date.time : '';
-            emit('update:time', time);
-          });
-        });
+      if (!timePickerElement) {
+        console.error('Date range picker element not found');
+        return;
       }
-    });
 
-    return {
-      timepicker
-    };
-  }
+      const timePicker = new bulmaCalendar(timePickerElement, {
+        type: 'time', // 時間の選択を有効にする
+        displayMode: 'dialog',
+        validateLabel: 'Select',
+        cancelLabel: 'Cancel',
+        clearLabel: 'Clear',
+        todayLabel: 'Today',
+        nowLabel: 'Now',
+        // 追加のオプションをここに設定可能
+      });
+
+      // 選択された範囲のイベントリスナーを追加
+      timePicker.on('select', (timepicker) => {
+        let selectedTime = timepicker.data.time.start
+        this.$emit('timeSelected', selectedTime)
+      });
+    },
+  },
 };
 </script>
 

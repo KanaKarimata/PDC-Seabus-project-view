@@ -7,40 +7,49 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
+import { mapActions } from 'vuex';
 import bulmaCalendar from 'bulma-calendar';
 
 export default {
   name: 'DateTimeRangePicker',
-  emits: ['update:time'],
-  setup(props, { emit }) {
-    const dateTimeRangePicker = ref(null);
-
-    onMounted(() => {
-      if (dateTimeRangePicker.value) {
-        const calendar = bulmaCalendar.attach(dateTimeRangePicker.value, {
-          type: 'datetime',
-          isRange: true,
-          validateLabel: 'Select',
-          cancelLabel: 'Cancel',
-          clearLabel: 'Clear',
-          todayLabel: 'Today',
-          nowLabel: 'Now',
-        });
-
-        calendar.forEach(instance => {
-          instance.on('select', date => {
-            const time = date ? date.time : '';
-            emit('update:time', time);
-          });
-        });
-      }
-    });
-
+  data() {
     return {
-      dateTimeRangePicker
-    };
-  }
+      selectedStartDateTime: '',
+      selectedEndDateTime: ''
+    }
+  },
+  mounted() {
+    this.initializePicker();
+  },
+  methods: {
+    initializePicker() {
+      const datePickerElement = this.$refs.dateTimeRangePicker;
+
+      if (!datePickerElement) {
+        console.error('Date range picker element not found');
+        return;
+      }
+
+      const datePicker = new bulmaCalendar(datePickerElement, {
+        type: 'datetime', // 日付と時間の選択を有効にする
+        isRange: true,    // 範囲選択を有効にする
+        displayMode: 'dialog',
+        validateLabel: 'Select',
+        cancelLabel: 'Cancel',
+        clearLabel: 'Clear',
+        todayLabel: 'Today',
+        nowLabel: 'Now',
+        // 追加のオプションをここに設定可能
+      });
+
+      // 選択された範囲のイベントリスナーを追加
+      datePicker.on('select', (datepicker) => {
+        console.log('Start date:', datepicker.data.startDate);
+        console.log('End date:', datepicker.data.endDate);
+      });
+    },
+    ...mapActions(['updateSelectedTime', 'updateSelectedEndDateTime'])
+  },
 };
 </script>
 

@@ -5,8 +5,14 @@ export default createStore({
   state: {
     accessToken: localStorage.getItem('accessToken') || '',
     refreshToken: localStorage.getItem('refreshToken') || '',
+    selectedTime: '',
+    selectedStartDateTime: '',
+    selectedEndDateTime: '',
   },
   getters: {
+    selectedTime: state => state.selectedTime,
+    selectedStartDateTime: state => state.selectedStartDateTime,
+    selectedEndDateTime: state => state.selectedEndDateTime,
   },
   mutations: {
     setTokens(state, tokens) {
@@ -21,6 +27,18 @@ export default createStore({
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
     },
+    SET_SELECTED_TIME(state, value) {
+      state.selectedTime = value
+    },
+    SET_SELECTED_START_DATETIME(state, value) {
+      state.selectedStartDateTime = value
+    },
+    SET_SELECTED_END_DATETIME(state, value) {
+      state.selectedEndDateTime = value
+    },
+    updateScheduleDetail(state, { index, data }) {
+      state.scheduleDetails[index] = { ...state.scheduleDetails[index], ...data };
+    }
   },
   actions: {
     async login({ commit }, credentials) {
@@ -44,6 +62,15 @@ export default createStore({
     },
     logout({ commit }) {
       commit('clearTokens');
+    },
+    updateSelectedTime({ commit }, value) {
+      commit('SET_SELECTED_TIME', value);
+    },
+    updateSelectedStartDateTime({ commit }, value) {
+      commit('SET_SELECTED_START_DATETIME', value);
+    },
+    updateSelectedEndDateTime({ commit }, value) {
+      commit('SET_SELECTED_END_DATETIME', value);
     },
   },
   modules: {
