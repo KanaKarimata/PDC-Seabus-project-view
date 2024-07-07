@@ -8,11 +8,19 @@ export default createStore({
     selectedTime: '',
     selectedStartDateTime: '',
     selectedEndDateTime: '',
+    editPermissionEnum: {
+      MASTER: 6,
+      TO_YOKOHAMA_STATION: 2,
+      FROM_RED_BRICK_TO_YAMASHITA_PARK: 3,
+      FROM_RED_BRICK_TO_HAMMER_HEAD: 4,
+      TO_YAMASHITA_PARK: 5
+    }
   },
   getters: {
     selectedTime: state => state.selectedTime,
     selectedStartDateTime: state => state.selectedStartDateTime,
     selectedEndDateTime: state => state.selectedEndDateTime,
+    getEditPermission: state => state.editPermissionEnum
   },
   mutations: {
     setTokens(state, tokens) {
