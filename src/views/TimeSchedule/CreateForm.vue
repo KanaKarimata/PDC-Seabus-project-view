@@ -59,7 +59,6 @@
 
 <script>
   import axiosInstance from '../../../src/axios'
-  import { mapGetters } from 'vuex';
   import TimePicker from '../../components/TimePicker.vue';
   import DateTimeRangePicker from '../../components/DateTimeRangePicker.vue';
   import ScheduleDetailForm from '../../components/ScheduleDetailForm.vue'
