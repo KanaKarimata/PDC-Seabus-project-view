@@ -1,4 +1,5 @@
 <template>
+  <link rel="stylesheet" href="/css/top.css" type="text/css">
   <div class="columns" v-for="rule in this.operationRuleList" :key="rule.id">
     <div class="column is-8 is-offset-4">
       <router-link
@@ -75,7 +76,7 @@
     }
   }
 </script>
-
+<!-- 
 <style>
 .disabled-link {
   pointer-events: none;
@@ -86,4 +87,4 @@
   pointer-events: none;
   cursor: not-allowed;
 }
-</style>
+</style> -->
