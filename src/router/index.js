@@ -28,7 +28,7 @@ const routes = [
     component: TimeScheduleIndex
   },
   {
-    path: '/confirm',
+    path: '/confirm/:id',
     name: 'Confirm',
     component: Confirm
   }
