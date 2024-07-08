@@ -4,7 +4,7 @@
     <div class="column is-8 is-offset-4">
       <router-link
       :to="{
-        name: 'TimeScheduleManagement',
+        name: 'TimeScheduleIndex',
         params: {id: rule.id}}"
       class="column is-6"
       :class="{'disabled-link' : isDisabled(rule.id)}">

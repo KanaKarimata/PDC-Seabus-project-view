@@ -58,7 +58,7 @@
 </template>
 
 <script>
-  import axios from 'axios'
+  import axiosInstance from '../../../src/axios'
   import { mapGetters } from 'vuex';
   import TimePicker from '../../components/TimePicker.vue';
   import DateTimeRangePicker from '../../components/DateTimeRangePicker.vue';
@@ -73,46 +73,50 @@
     },
     data() {
       return {
-        time_schedule_name: '',
+        operation_rule: null,
+        time_schedule_name: null,
         out_of_service_flg: false,
-        time_schedule_detail: Array(20).fill().map(() => ({
-          departure_time: '',
-          operation_status_id: '',
-          operation_status_detail_id: '',
-          detail_comment: '',
-          memo: ''
-        })),
-        publish_status_id: '',
-        publish_start_date: '',
-        publish_end_date: ''
+        time_schedule_detail: [],
+        publish_status_id: 0,
+        publish_start_date: null,
+        publish_end_date: null
       }
+    },
+    created() {
+      this.operation_rule = this.$route.params.id
     },
     methods: {
       handleUpdateDetails(details) {
         this.time_schedule_detail = details;
-        console.log('handleUpdateDetails')
-        console.log(details)
       },
       getDateTimeRangeSelected(dateTimeRange) {
         this.publish_start_date = dateTimeRange.selectedStartDateTime
         this.publish_end_date = dateTimeRange.selectedEndDateTime
       },
       async registerOnly() {
-        console.log('++++++++registerOnly++++++')
-        console.log(this.time_schedule_name)
-        console.log(this.publish_start_date)
-        console.log(this.publish_end_date)
+        const timeScheduleRequestData = this.time_schedule_detail.filter(item =>
+          item.departure_time !== null ||
+          item.operation_status_id !== null ||
+          item.operation_status_detail_id !== null ||
+          item.detail_comment !== null ||
+          item.memo !== null
+        )
 
         try {
-          const response = await axios.post('http://localhost:8000/operation-rule/time-schedule-create/', {
+          const response = await axiosInstance.post('http://localhost:8000/operation-rule/time-schedule-create/', {
+            operation_rule: this.operation_rule,
             time_schedule_name: this.time_schedule_name,
             out_of_service_flg: this.out_of_service_flg,
-            time_schedule_detail: this.time_schedule_detail,
+            time_schedule_detail: timeScheduleRequestData,
             publish_status_id: 0,
             publish_start_date: this.publish_start_date,
             publish_end_date: this.publish_end_date
           })
           console.log('APIレスポンス:', response.data)
+          console.log('レスポンス:', response)
+          if (response.status === 201) {
+            this.$router.push('/confirm');
+          }
         } catch (error) {
           console.error('APIエラー:', error.response ? error.response.data : error.message)
         }

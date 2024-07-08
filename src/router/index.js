@@ -3,7 +3,8 @@ import HomeView from '../views/HomeView.vue'
 import Login from '../views/Login.vue'
 import Top from '../views/Top.vue'
 import Form from '../views/TimeSchedule/CreateForm.vue'
-import TimeScheduleManagement from '../views/TimeSchedule/management.vue'
+import TimeScheduleIndex from '../views/TimeSchedule/index.vue'
+import Confirm from '../views/TimeSchedule/Confirm.vue'
 
 const routes = [
   {
@@ -17,14 +18,19 @@ const routes = [
     component: Top
   },
   {
-    path: '/create-form',
+    path: '/create/:id',
     name: 'CreateForm',
     component: Form
   },
   {
-    path: '/operation-rule/:id/time-schedule-management',
-    name: 'TimeScheduleManagement',
-    component: TimeScheduleManagement
+    path: '/operation-rule/:id/',
+    name: 'TimeScheduleIndex',
+    component: TimeScheduleIndex
+  },
+  {
+    path: '/confirm',
+    name: 'Confirm',
+    component: Confirm
   }
 ]
 

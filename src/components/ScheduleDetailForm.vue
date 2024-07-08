@@ -166,11 +166,11 @@ export default {
     return {
       details: Array.from({ length: 20 }, (v, k) => ({
         id: k + 1,
-        departure_time: '',
+        departure_time: null,
         operation_status_id: null,
         operation_status_detail_id: null,
-        detail_comment: '',
-        memo: ''
+        detail_comment: null,
+        memo: null
       }))
     }
   },
