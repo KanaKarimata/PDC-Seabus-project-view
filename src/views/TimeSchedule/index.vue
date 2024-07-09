@@ -6,8 +6,8 @@
       <div>
         <button class="button is-success">
           <router-link :to="{
-            name: 'CreateForm'
-            , params: {id: this.$route.params.id}
+            name: 'Form'
+            , params: {id: this.$route.params.id, type: 'create'}
           }"
           class="font-white">新規作成</router-link>
         </button>

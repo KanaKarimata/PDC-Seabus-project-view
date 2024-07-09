@@ -1,6 +1,6 @@
 <template>
   <RecycleScroller
-      :items="details"
+      :items="expandedDetails"
       :item-size="50"
       key-field="id"
       v-slot="{ item, index }"
@@ -9,7 +9,7 @@
         <div class="field">
           <label>No.{{ index + 1 }} [時間]</label>
           <div class="control column is-3">
-            <TimePicker v-model="item.departure_time" @timeSelected="getTimeSelected(index, $event)"/>
+            <TimePicker :time="item.departure_time" v-model="item.departure_time" @timeSelected="getTimeSelected(index, $event)"/>
           </div>
         </div>
 
@@ -162,16 +162,23 @@ export default {
     RecycleScroller,
     TimePicker
   },
-  data() {
-    return {
-      details: Array.from({ length: 20 }, (v, k) => ({
-        id: k + 1,
+  props: {
+    details: {
+      type: Array,
+      required: true
+    }
+  },
+  computed: {
+    expandedDetails() {
+      const emptyDetails = Array.from({ length: 20 - this.details.length }, (v, k) => ({
+        id: this.details.length + k + 1,
         departure_time: null,
         operation_status_id: null,
         operation_status_detail_id: null,
         detail_comment: null,
         memo: null
-      }))
+      }));
+      return [...this.details, ...emptyDetails];
     }
   },
   methods: {
@@ -180,7 +187,7 @@ export default {
       this.emitUpdateDetails()
     },
     emitUpdateDetails() {
-      this.$emit('updateDetails', this.details)
+      this.$emit('updateDetails', this.expandedDetails)
     }
   }
 }

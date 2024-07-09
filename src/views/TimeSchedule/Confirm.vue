@@ -5,7 +5,14 @@
       <div>
         <h1 class="title">{{ this.title }}</h1>
         <button class="button">複製</button>
-        <button class="button">編集</button>
+        <button class="button">
+          <router-link
+            :to="{
+              name: 'Form',
+              params: {id: this.$route.params.id, type: 'update'}
+            }"
+          >編集</router-link>
+        </button>
       </div>
 
       <div class="card">

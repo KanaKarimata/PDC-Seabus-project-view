@@ -26,7 +26,7 @@
   
                 <hr>
   
-                <ScheduleDetailForm @updateDetails="handleUpdateDetails"/>
+                <ScheduleDetailForm :details="time_schedule_detail" @updateDetails="handleUpdateDetails"/>
               </div>
 
               <div class="field">
@@ -58,13 +58,13 @@
 </template>
 
 <script>
-  import axiosInstance from '../../../src/axios'
+  import axiosInstance from '../../axios'
   import TimePicker from '../../components/TimePicker.vue';
   import DateTimeRangePicker from '../../components/DateTimeRangePicker.vue';
   import ScheduleDetailForm from '../../components/ScheduleDetailForm.vue'
 
   export default {
-    name: 'CreateForm',
+    name: 'Form',
     components: {
       TimePicker,
       DateTimeRangePicker,
@@ -75,7 +75,14 @@
         operation_rule: null,
         time_schedule_name: null,
         out_of_service_flg: false,
-        time_schedule_detail: [],
+        time_schedule_detail: Array.from({ length: 20 }, (v, k) => ({
+          id: k + 1,
+          departure_time: null,
+          operation_status_id: null,
+          operation_status_detail_id: null,
+          detail_comment: null,
+          memo: null
+        })),
         publish_status_id: 0,
         publish_start_date: null,
         publish_end_date: null
@@ -83,6 +90,14 @@
     },
     created() {
       this.operation_rule = this.$route.params.id
+      console.log(this.$route.params.type)
+      if (this.$route.params.type) {
+        if (this.$route.params.type === 'update') {
+          this.getTimeScheduleData()
+        } else {
+
+        }
+      }
     },
     methods: {
       handleUpdateDetails(details) {
@@ -91,6 +106,28 @@
       getDateTimeRangeSelected(dateTimeRange) {
         this.publish_start_date = dateTimeRange.selectedStartDateTime
         this.publish_end_date = dateTimeRange.selectedEndDateTime
+      },
+      async getTimeScheduleData() {
+        try {
+          const response = await axiosInstance.get('http://localhost:8000/operation-rule/time-schedule-detail/index/', {
+            params: {
+              time_schedule_id: this.$route.params.id
+            }
+          })
+          console.log('APIレスポンス:', response.data.scheduleDetails)
+          console.log('レスポンス:', response.data.time_schedule)
+
+          const time_schedule = response.data.time_schedule
+
+          this.time_schedule_name = time_schedule.time_schedule_name
+          this.out_of_service_flg = time_schedule.out_of_service_flg
+          this.publish_start_date = time_schedule.publish_start_date
+          this.publish_end_date = time_schedule.publish_end_date
+          this.time_schedule_detail = response.data.scheduleDetails
+
+        } catch (error) {
+          console.error('APIエラー:', error.response ? error.response.data : error.message)
+        }
       },
       async registerOnly() {
         const timeScheduleRequestData = this.time_schedule_detail.filter(item =>
