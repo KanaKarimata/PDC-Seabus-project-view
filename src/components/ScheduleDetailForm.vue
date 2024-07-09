@@ -23,35 +23,11 @@
 
         <div class="field">
           <label>No.{{ index + 1 }} [運行状況]</label>
-          <div class="columns">
-            <div class="column">
+          <div v-for="(group, index) in chunkedOperationStatus" :key="index"  class="columns">
+            <div v-for="status in group" :key="status.id" class="column">
               <label class="radio">
-                <input type="radio" :name="`operationStatus_${index}`" v-model="item.operation_status_id" value="1" @change="emitUpdateDetails"/>
-                  通常運航
-              </label>
-            </div>
-            <div class="column">
-              <label class="radio">
-                <input type="radio" :name="`operationStatus_${index}`" v-model="item.operation_status_id" value="2" @change="emitUpdateDetails"/>
-                  運航見合わせ
-              </label>
-            </div>
-            <div class="column">
-              <label class="radio">
-                <input type="radio" :name="`operationStatus_${index}`" v-model="item.operation_status_id" value="3" @change="emitUpdateDetails"/>
-                  欠航
-              </label>
-            </div>
-            <div class="column">
-              <label class="radio">
-                <input type="radio" :name="`operationStatus_${index}`" v-model="item.operation_status_id" value="4" @change="emitUpdateDetails"/>
-                  運休
-              </label>
-            </div>
-            <div class="column">
-              <label class="radio">
-                <input type="radio" :name="`operationStatus_${index}`" v-model="item.operation_status_id" value="5" @change="emitUpdateDetails"/>
-                  満席
+                <input type="radio" :name="`operationStatus_${index}`" v-model="item.operation_status_id" value="{{ status.id }}" @change="emitUpdateDetails"/>
+                  {{ status.operations_status_type }}
               </label>
             </div>
           </div>
@@ -59,83 +35,11 @@
 
         <div class="field">
           <label>No.{{ index + 1 }} [詳細]</label>
-          <div class="columns">
-            <div class="column">
+          <div v-for="(group, index) in chunkedOperationStatusDetail" :key="index" class="columns">
+            <div v-for="detail in group" :key="detail.id" class="column">
               <label class="radio">
-                <input type="radio" :name="`operationStatusDetail_${index}`" v-model="item.operation_status_detail_id" value="1" @change="emitUpdateDetails"/>
-                  河川増水
-              </label>
-            </div>
-            <div class="column">
-              <label class="radio">
-                <input type="radio" :name="`operationStatusDetail_${index}`" v-model="item.operation_status_detail_id" value="2" @change="emitUpdateDetails"/>
-                  潮位
-              </label>
-            </div>
-            <div class="column">
-              <label class="radio">
-                <input type="radio" :name="`operationStatusDetail_${index}`" v-model="item.operation_status_detail_id" value="3" @change="emitUpdateDetails"/>
-                  荒天
-              </label>
-            </div>
-            <div class="column">
-              <label class="radio">
-                <input type="radio" :name="`operationStatusDetail_${index}`" v-model="item.operation_status_detail_id" value="4" @change="emitUpdateDetails"/>
-                  強風
-              </label>
-            </div>
-          </div>
-
-          <div class="columns">
-            <div class="column">
-              <label class="radio">
-                <input type="radio" :name="`operationStatusDetail_${index}`" v-model="item.operation_status_detail_id" value="5" @change="emitUpdateDetails"/>
-                  台風
-              </label>
-            </div>
-            <div class="column">
-              <label class="radio">
-                <input type="radio" :name="`operationStatusDetail_${index}`" v-model="item.operation_status_detail_id" value="6" @change="emitUpdateDetails"/>
-                  濃霧
-              </label>
-            </div>
-            <div class="column">
-              <label class="radio">
-                <input type="radio" :name="`operationStatusDetail_${index}`" v-model="item.operation_status_detail_id" value="7" @change="emitUpdateDetails"/>
-                  雪
-              </label>
-            </div>
-            <div class="column">
-              <label class="radio">
-                <input type="radio" :name="`operationStatusDetail_${index}`" v-model="item.operation_status_detail_id" value="8" @change="emitUpdateDetails"/>
-                  大型客船入港
-              </label>
-            </div>
-          </div>
-
-          <div class="columns">
-            <div class="column">
-              <label class="radio">
-                <input type="radio" :name="`operationStatusDetail_${index}`" v-model="item.operation_status_detail_id" value="9" @change="emitUpdateDetails"/>
-                  整備点検
-              </label>
-            </div>
-            <div class="column">
-              <label class="radio">
-                <input type="radio" :name="`operationStatusDetail_${index}`" v-model="item.operation_status_detail_id" value="10" @change="emitUpdateDetails"/>
-                  定員満了
-              </label>
-            </div>
-            <div class="column">
-              <label class="radio">
-                <input type="radio" :name="`operationStatusDetail_${index}`" v-model="item.operation_status_detail_id" value="11" @change="emitUpdateDetails"/>
-                  団体貸切
-              </label>
-            </div>
-            <div class="column">
-              <label class="radio">
-                <input type="radio" :name="`operationStatusDetail_${index}`" v-model="item.operation_status_detail_id" value="12" @change="emitUpdateDetails"/>
-                  表示しない
+                <input type="radio" :name="`operationStatusDetail_${index}`" v-model="item.operation_status_detail_id" value="{{ detail.id }}" @change="emitUpdateDetails"/>
+                  {{ detail.operation_status_detail }}
               </label>
             </div>
           </div>
@@ -175,6 +79,14 @@ export default {
     details: {
       type: Array,
       required: true
+    },
+    operation_status: {
+      type: Array,
+      required: true
+    },
+    operation_status_detail: {
+      type: Array,
+      required: true
     }
   },
   computed: {
@@ -188,6 +100,12 @@ export default {
         memo: null
       }));
       return [...this.details, ...emptyDetails];
+    },
+    chunkedOperationStatus() {
+      return this.chunkArray(this.operation_status, 4);
+    },
+    chunkedOperationStatusDetail() {
+      return this.chunkArray(this.operation_status_detail, 4);
     }
   },
   methods: {
@@ -197,6 +115,13 @@ export default {
     },
     emitUpdateDetails() {
       this.$emit('updateDetails', this.expandedDetails)
+    },
+    chunkArray(array, size) {
+      const chunkedArray = [];
+      for (let i = 0; i < array.length; i += size) {
+        chunkedArray.push(array.slice(i, i + size));
+      }
+      return chunkedArray;
     }
   }
 }

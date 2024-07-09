@@ -18,17 +18,22 @@ const routes = [
     component: Top
   },
   {
-    path: '/form/:id/:type',
+    path: '/operation-rule/:operation_rule_id/form/:type',
     name: 'Form',
     component: Form
   },
   {
-    path: '/operation-rule/:id/',
+    path: '/operation-rule/:operation_rule_id/form/:time_schedule_id/:type',
+    name: 'UpdateForm',
+    component: Form
+  },
+  {
+    path: '/operation-rule/:operation_rule_id/',
     name: 'TimeScheduleIndex',
     component: TimeScheduleIndex
   },
   {
-    path: '/confirm/:id',
+    path: '/operation-rule/:operation_rule_id/confirm/:time_schedule_id',
     name: 'Confirm',
     component: Confirm
   }

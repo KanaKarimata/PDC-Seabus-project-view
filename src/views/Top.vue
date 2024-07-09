@@ -8,7 +8,7 @@
          <router-link
           :to="{
             name: 'TimeScheduleIndex',
-            params: {id: rule.id}}"
+            params: {operation_rule_id: rule.id}}"
           class=""
           :class="{'disabled-link' : isDisabled(rule.id)}">{{rule.operation_rule_name}}</router-link>
         </button>

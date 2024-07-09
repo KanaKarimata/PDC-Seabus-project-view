@@ -3,6 +3,13 @@
     <div class="columns">
       <div class="column is-8 is-offset-2">
 
+        <h1 class="title">
+          {{ this.title }}
+          <span v-if="this.updateFlg">[編集]</span>
+          <span v-else-if="this.copyFlg">[複製]</span>
+          <span v-else>[新規]</span>
+        </h1>
+
         <form @submit.prevent="submitForm" style="font-size: 14px;">
           <div class="card" style="height: 11000px;">
             <div class="card-content" style="height: 11000px;">
@@ -26,7 +33,11 @@
   
                 <hr>
   
-                <ScheduleDetailForm :details="time_schedule_detail" @updateDetails="handleUpdateDetails"/>
+                <ScheduleDetailForm
+                  :details="time_schedule_detail"
+                  :operation_status="operation_status"
+                  :operation_status_detail="operation_status_detail"
+                  @updateDetails="handleUpdateDetails"/>
               </div>
 
               <div class="field">
@@ -100,7 +111,12 @@
         })),
         publish_status_id: 0,
         publish_start_date: null,
-        publish_end_date: null
+        publish_end_date: null,
+        operation_status: [],
+        operation_status_detail: [],
+        title: null,
+        updateFlg: false,
+        copyFlg: false
       }
     },
     created() {
@@ -108,6 +124,12 @@
       console.log(this.$route.params.type)
       if (this.$route.params.type) {
         if (this.$route.params.type === 'update') {
+          // 編集
+          this.updateFlg = true
+          this.getTimeScheduleData()
+        } else if (this.$route.params.type === 'copy') {
+          // 複製
+          this.copyFlg = true
           this.getTimeScheduleData()
         } else {
           this.getMasterData()
@@ -124,18 +146,9 @@
       },
       async getMasterData() {
         try {
-          const response = await axiosInstance.get('http://localhost:8000/operation-rule/time-schedule-detail/index/', {
-            params: {
-              time_schedule_id: this.$route.params.id
-            }
-          })
-          console.log('APIレスポンス:', response.data.scheduleDetails)
-          console.log('レスポンス:', response.data.time_schedule)
-
-          // マスターデータ取得
-
-          
-
+          const response = await axiosInstance.get('http://localhost:8000/operation-rule/time-schedule/master/')
+          this.operation_status = response.data.operation_status
+          this.operation_status_detail = response.data.operation_status_detail
         } catch (error) {
           console.error('APIエラー:', error.response ? error.response.data : error.message)
         }
@@ -144,12 +157,9 @@
         try {
           const response = await axiosInstance.get('http://localhost:8000/operation-rule/time-schedule-detail/index/', {
             params: {
-              time_schedule_id: this.$route.params.id
+              time_schedule_id: this.$route.params.time_schedule_id
             }
           })
-          console.log('APIレスポンス:', response.data.scheduleDetails)
-          console.log('レスポンス:', response.data.time_schedule)
-
           const time_schedule = response.data.time_schedule
 
           this.time_schedule_name = time_schedule.time_schedule_name
@@ -157,6 +167,11 @@
           this.publish_start_date = time_schedule.publish_start_date
           this.publish_end_date = time_schedule.publish_end_date
           this.time_schedule_detail = response.data.scheduleDetails
+          // マスターデータ
+          this.operation_status = response.data.operation_status
+          this.operation_status_detail = response.data.operation_status_detail
+
+          this.title = response.data.operation_rule_name
 
         } catch (error) {
           console.error('APIエラー:', error.response ? error.response.data : error.message)
@@ -171,6 +186,13 @@
           item.memo !== null
         )
 
+        if (updateFlg) {
+          this.update()
+        } else {
+          this.create()
+        }
+      },
+      async create() {
         try {
           const response = await axiosInstance.post('http://localhost:8000/operation-rule/time-schedule-create/', {
             operation_rule: this.operation_rule,
@@ -190,6 +212,9 @@
           console.error('APIエラー:', error.response ? error.response.data : error.message)
         }
       },
+      async update() {
+
+      }
     }
   }
 </script>

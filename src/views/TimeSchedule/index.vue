@@ -6,9 +6,11 @@
       <div>
         <button class="button is-success">
           <router-link :to="{
-            name: 'Form'
-            , params: {id: this.$route.params.id, type: 'create'}
-          }"
+            name: 'Form',
+            params: {
+              operation_rule_id: this.$route.params.operation_rule_id,
+              type: 'create'
+            }}"
           class="font-white">新規作成</router-link>
         </button>
       </div>
@@ -27,7 +29,7 @@
         <div class="column is-1"><input type="checkbox" /></div>
         <div class="column is-1">{{ item.publish_status_id }}</div>
         <div class="column is-4">
-          <router-link :to="{name: 'Confirm', params: {id: item.id}}">{{ item.time_schedule_name }}</router-link>
+          <router-link :to="{name: 'Confirm', params: {operation_rule_id: this.$route.params.operation_rule_id, time_schedule_id: item.id}}">{{ item.time_schedule_name }}</router-link>
         </div>
         <div class="column is-2">{{ formatDate(item.publish_start_date) }}</div>
         <div class="column is-2">{{ formatDate(item.publish_end_date) }}</div>
@@ -58,7 +60,7 @@ export default {
       try {
         const response = await axiosInstance.get('http://localhost:8000/operation-rule/time-schedule/index/', {
           params: {
-            operation_rule_id: this.$route.params.id
+            operation_rule_id: this.$route.params.operation_rule_id
           }})
         console.log('APIレスポンス:', response.data)
         this.timeScheduleList = response.data.schedules

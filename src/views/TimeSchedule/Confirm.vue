@@ -4,13 +4,26 @@
     <div class="column">
       <div>
         <h1 class="title">{{ this.title }}</h1>
-        <button class="button">複製</button>
         <button class="button">
           <router-link
             :to="{
-              name: 'Form',
-              params: {id: this.$route.params.id, type: 'update'}
-            }"
+              name: 'UpdateForm',
+              params: {
+                operation_rule_id: this.$route.params.operation_rule_id,
+                time_schedule_id: this.$route.params.time_schedule_id,
+                type: 'copy'
+              }}"
+          >複製</router-link>
+        </button>
+        <button class="button">
+          <router-link
+            :to="{
+              name: 'UpdateForm',
+              params: {
+                operation_rule_id: this.$route.params.operation_rule_id,
+                time_schedule_id: this.$route.params.time_schedule_id,
+                type: 'update'
+              }}"
           >編集</router-link>
         </button>
       </div>
@@ -90,7 +103,7 @@ export default {
       try {
         const response = await axiosInstance.get('http://localhost:8000/operation-rule/time-schedule-detail/index/', {
           params: {
-            time_schedule_id: this.$route.params.id
+            time_schedule_id: this.$route.params.time_schedule_id
           }})
         console.log('APIレスポンス:', response.data)
         this.timeScheduleDetailList = response.data.scheduleDetails
