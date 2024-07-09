@@ -31,8 +31,24 @@
 
               <div class="field">
                 <label>公開日時</label>
-                  <div class="control column is-8">
-                    <DateTimeRangePicker v-model="publish_start_date" @dateTimeRangeSelected="getDateTimeRangeSelected"/>
+                  <div style="display: flex; justify-content: center;" class="control column is-10">
+                    <DatetimePicker
+                      v-model="publish_start_date"
+                      format="YYYY-MM-DD HH:mm"
+                      :minute-interval="1"
+                      :only-time="false"
+                      label="Select date & time"
+                      color="#48c78e"
+                    />
+                    <div style="margin: 0 16px; padding-top: 8px;">〜</div>
+                    <DatetimePicker
+                      v-model="publish_end_date"
+                      format="YYYY-MM-DD HH:mm"
+                      :minute-interval="1"
+                      :only-time="false"
+                      label="Select date & time"
+                      color="#48c78e"
+                    />
                   </div>
               </div>
 
@@ -59,16 +75,15 @@
 
 <script>
   import axiosInstance from '../../axios'
-  import TimePicker from '../../components/TimePicker.vue';
-  import DateTimeRangePicker from '../../components/DateTimeRangePicker.vue';
-  import ScheduleDetailForm from '../../components/ScheduleDetailForm.vue'
+  import ScheduleDetailForm from '../../components/ScheduleDetailForm.vue';
+  import DatetimePicker from 'vue-ctk-date-time-picker';
+  import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css';
 
   export default {
     name: 'Form',
     components: {
-      TimePicker,
-      DateTimeRangePicker,
-      ScheduleDetailForm
+      ScheduleDetailForm,
+      DatetimePicker
     },
     data() {
       return {
@@ -95,7 +110,7 @@
         if (this.$route.params.type === 'update') {
           this.getTimeScheduleData()
         } else {
-
+          this.getMasterData()
         }
       }
     },
@@ -106,6 +121,24 @@
       getDateTimeRangeSelected(dateTimeRange) {
         this.publish_start_date = dateTimeRange.selectedStartDateTime
         this.publish_end_date = dateTimeRange.selectedEndDateTime
+      },
+      async getMasterData() {
+        try {
+          const response = await axiosInstance.get('http://localhost:8000/operation-rule/time-schedule-detail/index/', {
+            params: {
+              time_schedule_id: this.$route.params.id
+            }
+          })
+          console.log('APIレスポンス:', response.data.scheduleDetails)
+          console.log('レスポンス:', response.data.time_schedule)
+
+          // マスターデータ取得
+
+          
+
+        } catch (error) {
+          console.error('APIエラー:', error.response ? error.response.data : error.message)
+        }
       },
       async getTimeScheduleData() {
         try {

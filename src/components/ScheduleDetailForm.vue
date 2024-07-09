@@ -8,8 +8,16 @@
       <div :key="item.id">
         <div class="field">
           <label>No.{{ index + 1 }} [時間]</label>
-          <div class="control column is-3">
-            <TimePicker :time="item.departure_time" v-model="item.departure_time" @timeSelected="getTimeSelected(index, $event)"/>
+          <div class="control column is-4">
+            <DatetimePicker
+              id="time-picker"
+              v-model="item.departure_time"
+              format="hh:mm a"
+              formatted="hh:mm a"
+              label="Select time"
+              color="#48c78e"
+              only-time
+            />
           </div>
         </div>
 
@@ -155,12 +163,13 @@
 
 <script>
 import { RecycleScroller } from 'vue-virtual-scroller'
-import TimePicker from './TimePicker.vue'
+import DatetimePicker from 'vue-ctk-date-time-picker';
+import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css';
 
 export default {
   components: {
     RecycleScroller,
-    TimePicker
+    DatetimePicker
   },
   props: {
     details: {

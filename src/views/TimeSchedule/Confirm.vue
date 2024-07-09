@@ -94,7 +94,7 @@ export default {
           }})
         console.log('APIレスポンス:', response.data)
         this.timeScheduleDetailList = response.data.scheduleDetails
-        this.time_schedule_name = response.data.time_schedule_name
+        this.time_schedule_name = response.data.time_schedule.time_schedule_name
       } catch (error) {
         console.error('APIエラー:', error.response ? error.response.data : error.message)
       }
