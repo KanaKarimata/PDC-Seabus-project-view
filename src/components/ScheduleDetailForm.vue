@@ -2,31 +2,37 @@
   <RecycleScroller
       :items="expandedDetails"
       :item-size="50"
-      key-field="id"
+      key-field="key_id"
       v-slot="{ item, index }"
     >
-      <div :key="item.id">
+      <div :key="item.key_id">
         <div class="field">
           <label>No.{{ index + 1 }} [時間]</label>
           <div class="control column is-4">
             <DatetimePicker
-              id="time-picker"
+              :id="`time-picker-${index}`"
               v-model="item.departure_time"
-              format="hh:mm a"
-              formatted="hh:mm a"
+              format="hh:mm"
+              formatted="hh:mm"
               label="Select time"
               color="#48c78e"
               only-time
+              @change="emitUpdateDetails"
             />
           </div>
         </div>
 
         <div class="field">
           <label>No.{{ index + 1 }} [運行状況]</label>
-          <div v-for="(group, index) in chunkedOperationStatus" :key="index"  class="columns">
+          <div v-for="(group, i) in chunkedOperationStatus" :key="i"  class="columns">
             <div v-for="status in group" :key="status.id" class="column">
               <label class="radio">
-                <input type="radio" :name="`operationStatus_${index}`" v-model="item.operation_status_id" value="{{ status.id }}" @change="emitUpdateDetails"/>
+                <input
+                  type="radio"
+                  :name="`operationStatus_${index}_${status.id}`"
+                  v-model="item.operation_status_id"
+                  :value="status.id"
+                  @change="emitUpdateDetails"/>
                   {{ status.operations_status_type }}
               </label>
             </div>
@@ -35,10 +41,15 @@
 
         <div class="field">
           <label>No.{{ index + 1 }} [詳細]</label>
-          <div v-for="(group, index) in chunkedOperationStatusDetail" :key="index" class="columns">
+          <div v-for="(group, i) in chunkedOperationStatusDetail" :key="i" class="columns">
             <div v-for="detail in group" :key="detail.id" class="column">
               <label class="radio">
-                <input type="radio" :name="`operationStatusDetail_${index}`" v-model="item.operation_status_detail_id" value="{{ detail.id }}" @change="emitUpdateDetails"/>
+                <input
+                  type="radio"
+                  :name="`operationStatusDetail_${index}_${detail.id}`"
+                  v-model="item.operation_status_detail_id"
+                  :value="detail.id"
+                  @change="emitUpdateDetails"/>
                   {{ detail.operation_status_detail }}
               </label>
             </div>
@@ -92,7 +103,8 @@ export default {
   computed: {
     expandedDetails() {
       const emptyDetails = Array.from({ length: 20 - this.details.length }, (v, k) => ({
-        id: this.details.length + k + 1,
+        key_id: this.details.length + k + 1,
+        id: null,
         departure_time: null,
         operation_status_id: null,
         operation_status_detail_id: null,
@@ -121,6 +133,7 @@ export default {
       for (let i = 0; i < array.length; i += size) {
         chunkedArray.push(array.slice(i, i + size));
       }
+      console.log(chunkedArray)
       return chunkedArray;
     }
   }

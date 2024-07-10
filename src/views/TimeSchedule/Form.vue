@@ -102,7 +102,8 @@
         time_schedule_name: null,
         out_of_service_flg: false,
         time_schedule_detail: Array.from({ length: 20 }, (v, k) => ({
-          id: k + 1,
+          key_id: k + 1,
+          id: null,
           departure_time: null,
           operation_status_id: null,
           operation_status_detail_id: null,
@@ -120,8 +121,9 @@
       }
     },
     created() {
-      this.operation_rule = this.$route.params.id
+      this.operation_rule = this.$route.params.operation_rule_id
       console.log(this.$route.params.type)
+      console.log(this.operation_rule)
       if (this.$route.params.type) {
         if (this.$route.params.type === 'update') {
           // 編集
@@ -161,24 +163,33 @@
             }
           })
           const time_schedule = response.data.time_schedule
-
           this.time_schedule_name = time_schedule.time_schedule_name
           this.out_of_service_flg = time_schedule.out_of_service_flg
           this.publish_start_date = time_schedule.publish_start_date
           this.publish_end_date = time_schedule.publish_end_date
-          this.time_schedule_detail = response.data.scheduleDetails
-          // マスターデータ
           this.operation_status = response.data.operation_status
           this.operation_status_detail = response.data.operation_status_detail
-
           this.title = response.data.operation_rule_name
+          const formattedData = response.data.scheduleDetails.map((item, index) => ({
+            key_id: index + 1,
+            id: item.id,
+            departure_time: item.departure_time,
+            operation_status_id: item.operation_status_id,
+            operation_status_detail_id: item.operation_status_detail_id,
+            detail_comment: item.detail_comment,
+            memo: item.memo
+          }));
+          this.time_schedule_detail = formattedData
+
+          console.log('時刻表詳細')
+          console.log(this.time_schedule_detail)
 
         } catch (error) {
           console.error('APIエラー:', error.response ? error.response.data : error.message)
         }
       },
       async registerOnly() {
-        const timeScheduleRequestData = this.time_schedule_detail.filter(item =>
+        let timeScheduleRequestData = this.time_schedule_detail.filter(item =>
           item.departure_time !== null ||
           item.operation_status_id !== null ||
           item.operation_status_detail_id !== null ||
@@ -186,13 +197,17 @@
           item.memo !== null
         )
 
-        if (updateFlg) {
-          this.update()
+        timeScheduleRequestData.forEach(item => {
+          delete item.key_id
+        })
+
+        if (this.updateFlg) {
+          this.update(timeScheduleRequestData)
         } else {
-          this.create()
+          this.create(timeScheduleRequestData)
         }
       },
-      async create() {
+      async create(timeScheduleRequestData) {
         try {
           const response = await axiosInstance.post('http://localhost:8000/operation-rule/time-schedule-create/', {
             operation_rule: this.operation_rule,
@@ -212,8 +227,26 @@
           console.error('APIエラー:', error.response ? error.response.data : error.message)
         }
       },
-      async update() {
-
+      async update(timeScheduleRequestData) {
+        try {
+          const timeScheduleId = this.$route.params.time_schedule_id;
+          const response = await axiosInstance.put(`http://localhost:8000/operation-rule/time-schedule-update/${timeScheduleId}/`, {
+            operation_rule: this.operation_rule,
+            time_schedule_name: this.time_schedule_name,
+            out_of_service_flg: this.out_of_service_flg,
+            time_schedule_detail: timeScheduleRequestData,
+            publish_status_id: 0,
+            publish_start_date: this.publish_start_date,
+            publish_end_date: this.publish_end_date
+          })
+          console.log('APIレスポンス:', response.data)
+          console.log('レスポンス:', response)
+          if (response.status === 201) {
+            this.$router.push('/confirm');
+          }
+        } catch (error) {
+          console.error('APIエラー:', error.response ? error.response.data : error.message)
+        }
       }
     }
   }
