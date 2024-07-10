@@ -10,6 +10,25 @@
           <span v-else>[新規]</span>
         </h1>
 
+        <div>
+          <button v-if="!this.updateFlg && !this.copyFlg" class="button">
+            <router-link
+            :to="{
+              name: 'TimeScheduleIndex',
+              params: {operation_rule_id: this.$route.params.operation_rule_id}}"
+            >一覧へ戻る</router-link>
+          </button>
+          <button v-else class="button">
+            <router-link
+            :to="{
+              name: 'Confirm',
+              params: {
+                operation_rule_id: this.$route.params.operation_rule_id,
+                time_schedule_id: this.$route.params.time_schedule_id}}"
+            >確認画面へ戻る</router-link>
+          </button>
+        </div>
+
         <form @submit.prevent="submitForm" style="font-size: 14px;">
           <div class="card" style="height: 11000px;">
             <div class="card-content" style="height: 11000px;">
@@ -117,11 +136,13 @@
         operation_status_detail: [],
         title: null,
         updateFlg: false,
-        copyFlg: false
+        copyFlg: false,
+        time_schedule_id: null
       }
     },
     created() {
       this.operation_rule = this.$route.params.operation_rule_id
+      this.time_schedule_id = this.$route.params.time_schedule_id
       console.log(this.$route.params.type)
       console.log(this.operation_rule)
       if (this.$route.params.type) {
@@ -208,12 +229,17 @@
         }
       },
       async create(timeScheduleRequestData) {
+        let formData = timeScheduleRequestData.map(item => ({
+          ...item,
+          id: item.id !== null ? null : item.id
+        }))
+
         try {
           const response = await axiosInstance.post('http://localhost:8000/operation-rule/time-schedule-create/', {
             operation_rule: this.operation_rule,
             time_schedule_name: this.time_schedule_name,
             out_of_service_flg: this.out_of_service_flg,
-            time_schedule_detail: timeScheduleRequestData,
+            time_schedule_detail: formData,
             publish_status_id: 0,
             publish_start_date: this.publish_start_date,
             publish_end_date: this.publish_end_date
@@ -221,7 +247,14 @@
           console.log('APIレスポンス:', response.data)
           console.log('レスポンス:', response)
           if (response.status === 201) {
-            this.$router.push('/confirm');
+            let timeScheduleId = response.data.id; 
+            this.$router.push({
+              name: 'Confirm',
+              params: {
+                operation_rule_id: this.operation_rule,
+                time_schedule_id: timeScheduleId
+              }
+            });
           }
         } catch (error) {
           console.error('APIエラー:', error.response ? error.response.data : error.message)
@@ -229,7 +262,7 @@
       },
       async update(timeScheduleRequestData) {
         try {
-          const timeScheduleId = this.$route.params.time_schedule_id;
+          const timeScheduleId = this.time_schedule_id;
           const response = await axiosInstance.put(`http://localhost:8000/operation-rule/time-schedule-update/${timeScheduleId}/`, {
             operation_rule: this.operation_rule,
             time_schedule_name: this.time_schedule_name,
@@ -241,8 +274,14 @@
           })
           console.log('APIレスポンス:', response.data)
           console.log('レスポンス:', response)
-          if (response.status === 201) {
-            this.$router.push('/confirm');
+          if (response.status === 200) {
+            this.$router.push({
+              name: 'Confirm',
+              params: {
+                operation_rule_id: this.operation_rule,
+                time_schedule_id: this.time_schedule_id
+              }
+            });
           }
         } catch (error) {
           console.error('APIエラー:', error.response ? error.response.data : error.message)

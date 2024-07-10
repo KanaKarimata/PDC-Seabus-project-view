@@ -6,6 +6,13 @@
         <h1 class="title">{{ this.title }}</h1>
         <button class="button">
           <router-link
+          :to="{
+            name: 'TimeScheduleIndex',
+            params: {operation_rule_id: this.$route.params.operation_rule_id}}"
+          >一覧へ戻る</router-link>
+        </button>
+        <button class="button">
+          <router-link
             :to="{
               name: 'UpdateForm',
               params: {
