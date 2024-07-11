@@ -122,8 +122,8 @@ export default {
     setViewData(data) {
       return data ? data : ''
     },
-    formatDate(date) {
-      return moment(date).format('HH:mm');
+    formatDate(time) {
+      return moment(time, 'HH:mm:ss').format('HH:mm');
     }
   }
 }

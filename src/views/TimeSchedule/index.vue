@@ -27,9 +27,19 @@
       <!-- table data -->
       <div class="columns index-table-data" v-for="item in this.timeScheduleList" :key="item.id">
         <div class="column is-1"><input type="checkbox" /></div>
-        <div class="column is-1">{{ item.publish_status_id }}</div>
+        <div class="column is-1">
+          <div class="noPublish" v-if="item.publish_status_id !== 0">非公開</div>
+          <div class="publish" v-else>公開</div>
+        </div>
         <div class="column is-4">
-          <router-link :to="{name: 'Confirm', params: {operation_rule_id: this.$route.params.operation_rule_id, time_schedule_id: item.id}}">{{ item.time_schedule_name }}</router-link>
+          <router-link
+            :to="{
+              name: 'Confirm',
+              params: {
+                operation_rule_id: this.$route.params.operation_rule_id,
+                time_schedule_id: item.id
+                }}
+          "><span class="link-font">{{ item.time_schedule_name }}</span></router-link>
         </div>
         <div class="column is-2">{{ formatDate(item.publish_start_date) }}</div>
         <div class="column is-2">{{ formatDate(item.publish_end_date) }}</div>

@@ -1,6 +1,11 @@
 .font-white {
   color: #ffff !important;
 }
+.link-font {
+  color: #4a4a58;
+  text-decoration: underline;
+  font-weight: bold;
+}
 .index-table {
   margin-top: 16px;
   background: #707070;
@@ -8,4 +13,18 @@
 }
 .index-table-data {
   border-bottom: 1px solid #ccc;
+}
+.noPublish {
+  background: #b1b1b1;
+  color: #fff;
+  text-align: center;
+  border-radius: 30px;
+  font-size: 14px;
+}
+.publish {
+  background: #f48c77;
+  color: #fff;
+  text-align: center;
+  border-radius: 30px;
+  font-size: 14px;
 }
