@@ -1,7 +1,8 @@
 <template>
+  <link rel="stylesheet" href="/css/form.css" type="text/css">
   <div class="page-form">
     <div class="columns">
-      <div class="column is-8 is-offset-2">
+      <div class="column is-10 is-offset-1">
 
         <h1 class="title">
           {{ this.title }}
@@ -10,26 +11,26 @@
           <span v-else>[新規]</span>
         </h1>
 
-        <div>
-          <button v-if="!this.updateFlg && !this.copyFlg" class="button">
-            <router-link
+        <div class="back-button-area">
+          <router-link
+            v-if="!this.updateFlg && !this.copyFlg"
             :to="{
-              name: 'TimeScheduleIndex',
-              params: {operation_rule_id: this.$route.params.operation_rule_id}}"
-            >一覧へ戻る</router-link>
-          </button>
-          <button v-else class="button">
-            <router-link
-            :to="{
-              name: 'Confirm',
-              params: {
-                operation_rule_id: this.$route.params.operation_rule_id,
-                time_schedule_id: this.$route.params.time_schedule_id}}"
-            >確認画面へ戻る</router-link>
-          </button>
+            name: 'TimeScheduleIndex',
+            params: {operation_rule_id: this.$route.params.operation_rule_id}}"
+            class="button back-button"
+          ><i class="fa-solid fa-backward"></i>&ensp;一覧へ戻る</router-link>
+
+          <router-link
+          :to="{
+            name: 'Confirm',
+            params: {
+              operation_rule_id: this.$route.params.operation_rule_id,
+              time_schedule_id: this.$route.params.time_schedule_id}}"
+            class="button back-button"
+          ><i class="fa-solid fa-backward"></i>&ensp;確認画面へ戻る</router-link>
         </div>
 
-        <form @submit.prevent="submitForm" style="font-size: 14px;">
+        <form class="create-update-form-area" @submit.prevent="submitForm" style="font-size: 14px;">
           <div class="card" style="height: 11000px;">
             <div class="card-content" style="height: 11000px;">
               <div style="height: 10740px;">
@@ -124,8 +125,8 @@
           key_id: k + 1,
           id: null,
           departure_time: null,
-          operation_status_id: null,
-          operation_status_detail_id: null,
+          operation_status: null,
+          operation_status_detail: null,
           detail_comment: null,
           memo: null
         })),
@@ -195,8 +196,8 @@
             key_id: index + 1,
             id: item.id,
             departure_time: item.departure_time,
-            operation_status_id: item.operation_status_id,
-            operation_status_detail_id: item.operation_status_detail_id,
+            operation_status: item.operation_status,
+            operation_status_detail: item.operation_status_detail,
             detail_comment: item.detail_comment,
             memo: item.memo
           }));

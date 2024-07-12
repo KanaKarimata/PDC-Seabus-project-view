@@ -3,19 +3,17 @@
   <div class="columns">
     <div class="column is-full">
       <h1 class="title">{{ this.title }}</h1>
-      <div>
-        <button class="button is-success">
-          <router-link :to="{
-            name: 'Form',
-            params: {
-              operation_rule_id: this.$route.params.operation_rule_id,
-              type: 'create'
-            }}"
-          class="font-white">新規作成</router-link>
-        </button>
+      <div class="main-contents">
+        <router-link :to="{
+          name: 'Form',
+          params: {
+            operation_rule_id: this.$route.params.operation_rule_id,
+            type: 'create'
+          }}"
+        class="button create-button"><i class="fa-solid fa-feather"></i>&ensp;新規作成</router-link>
       </div>
       <!-- table header -->
-      <div class="columns has-text-white-bis index-table">
+      <div class="columns index-table">
         <div class="column is-1"><input type="checkbox" /></div>
         <div class="column is-1">ステータス</div>
         <div class="column is-4">運航ルール名</div>
@@ -28,7 +26,7 @@
       <div class="columns index-table-data" v-for="item in this.timeScheduleList" :key="item.id">
         <div class="column is-1"><input type="checkbox" /></div>
         <div class="column is-1">
-          <div class="noPublish" v-if="item.publish_status_id !== 0">非公開</div>
+          <div class="noPublish" v-if="item.publish_status_id === 0">非公開</div>
           <div class="publish" v-else>公開</div>
         </div>
         <div class="column is-4">

@@ -1,5 +1,8 @@
-.font-white {
-  color: #ffff !important;
+.title {
+  color: #0D0D0D;
+}
+.main-contents {
+  margin-top: 3rem;
 }
 .link-font {
   color: #4a4a58;
@@ -8,23 +11,36 @@
 }
 .index-table {
   margin-top: 16px;
-  background: #707070;
+  background: #B6BDE2;
   border-radius: 5px 5px 0 0;
+  color: #161618;
+  font-weight: bold;
 }
 .index-table-data {
-  border-bottom: 1px solid #ccc;
+  background: #fff;
+  border-bottom: 1px solid #EDEEF8;
+  padding: 8px 0;
 }
 .noPublish {
-  background: #b1b1b1;
-  color: #fff;
+  background: #DBDEF0;
+  color: #0D0D0D;
   text-align: center;
   border-radius: 30px;
   font-size: 14px;
+  height: 1.5rem;
+  line-height: 1.5rem;
 }
 .publish {
-  background: #f48c77;
-  color: #fff;
+  background: #FFE099;
+  color: #0D0D0D;
   text-align: center;
   border-radius: 30px;
   font-size: 14px;
+  height: 1.5rem;
+  line-height: 1.5rem;
+}
+.create-button {
+  color: #0D0D0D;
+  border: 1px solid #0D0D0D;
+  box-shadow: 4px 4px #0D0D0D;
 }

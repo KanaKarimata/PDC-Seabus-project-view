@@ -1,0 +1,31 @@
+.title {
+  color: #0D0D0D;
+  text-align: center;
+}
+.page-log-in {
+  position: relative;
+}
+.log-in-area {
+  position: absolute;
+  top: 2rem;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  width: 100%;
+}
+.login-button {
+  background: #0459C8;
+  border-color: #0459C8;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 30px;
+  margin-top: 4rem;
+  height: 48px;
+}
+.login-info {
+  margin-top: 3rem;
+}
+.input-box {
+  height: 48px;
+}

@@ -2,16 +2,15 @@
   <link rel="stylesheet" href="/css/top.css" type="text/css">
   <div class="columns" v-for="rule in this.operationRuleList" :key="rule.id">
     <div class="column is-8 is-offset-2">
-      <button
-        class="button column is-full"
-        :class="{'disabled': isDisabled(rule.id)}">
          <router-link
           :to="{
             name: 'TimeScheduleIndex',
             params: {operation_rule_id: rule.id}}"
-          class=""
-          :class="{'disabled-link' : isDisabled(rule.id)}">{{rule.operation_rule_name}}</router-link>
-        </button>
+          class="button index-button column is-full"
+          :class="{'disabled-link' : isDisabled(rule.id)}">
+            <i class="fa-solid fa-anchor icon-size"></i>
+            &emsp;{{rule.operation_rule_name}}
+        </router-link>
     </div>
   </div>
 </template>

@@ -3,6 +3,7 @@ import axiosInstance from '../axios';
 
 export default createStore({
   state: {
+    isAuthenticated: false,
     accessToken: localStorage.getItem('accessToken') || '',
     refreshToken: localStorage.getItem('refreshToken') || '',
     selectedTime: '',
@@ -23,6 +24,9 @@ export default createStore({
     getEditPermission: state => state.editPermissionEnum
   },
   mutations: {
+    setAuthenticate(state) {
+      state.isAuthenticated = true;
+    },
     setTokens(state, tokens) {
       state.accessToken = tokens.access;
       state.refreshToken = tokens.refresh;
@@ -34,6 +38,23 @@ export default createStore({
       state.refreshToken = '';
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
+      state.isAuthenticated = false;
+    },
+    initializeStore(state) {
+      const accessToken = localStorage.getItem('accessToken');
+      if (accessToken) {
+        state.accessToken = accessToken;
+        state.isAuthenticated = true;
+      } else {
+        state.accessToken = '';
+        state.isAuthenticated = false;
+      }
+      const refreshToken = localStorage.getItem('refreshToken');
+      if (refreshToken) {
+        state.refreshToken = refreshToken;
+      } else {
+        state.refreshToken = '';
+      }
     },
     SET_SELECTED_TIME(state, value) {
       state.selectedTime = value
@@ -53,6 +74,7 @@ export default createStore({
       try {
         const response = await axiosInstance.post('/token/', credentials);
         commit('setTokens', response.data);
+        commit('setAuthenticate');
       } catch (error) {
         console.error('Login error:', error);
         throw error;

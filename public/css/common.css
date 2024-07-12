@@ -1,0 +1,39 @@
+html {
+  height: 100%;
+}
+body {
+  background: #F4F5FB;
+}
+body,
+#wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+@media screen and (min-width: 1024px) {
+    .navbar {
+        min-height: 5rem;
+    }
+}
+.footer {
+  background-color: #161B37;
+  padding: 0.5rem;
+  width: 100%;
+  color: #DADDEF;
+  margin-top: auto;
+}
+.head-nav {
+  background: #161B37;
+  box-shadow: 0 4px 10px -2px rgba(0,0,0,.3);
+}
+.bg-indigo {
+  background: #161B37;
+}
+.brand-name{
+  color: #F18900;
+  font-size: 20px;
+}
+.navbar-item-not-authenticated {
+  margin-right: 50%;
+  color: #9AC4FB;
+}

@@ -54,11 +54,11 @@
             </tr>
             <tr>
               <td>No.{{ index + 1 }} [運航状況]</td>
-              <td>{{ item.operation_status_id }}</td>
+              <td>{{ item.operation_status_info.operations_status_type }}</td>
             </tr>
             <tr>
               <td>No.{{ index + 1 }} [詳細]</td>
-              <td>{{ item.operation_status_detail_id }}</td>
+              <td>{{ item.operation_status_detail_info.operation_status_detail }}</td>
             </tr>
             <tr>
               <td>No.{{ index + 1 }} [詳細コメント]</td>

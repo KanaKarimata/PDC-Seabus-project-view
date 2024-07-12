@@ -1,17 +1,27 @@
 <template>
+  <link rel="stylesheet" href="/css/common.css" type="text/css">
   <div id="wrapper">
-    <nav class="navbar is-dark">
+    <nav class="navbar head-nav">
       <div class="navbar-brand">
-        <router-link to="/" class="navbar-item"><strong>Time Table Management</strong></router-link>
+        <strong class="navbar-item brand-name">シーバス</strong>
 
-        <a class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbar-menu" @click="showHeaderMenu = !showHeaderMenu">
+        <a v-if="isAuthenticated" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbar-menu" @click="showHeaderMenu = !showHeaderMenu">
+          <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
         </a>
       </div>
 
-      <div class="navbar-menu" id="navbar-menu" :class="{'is-active': showHeaderMenu}">
+      <div v-if="!isAuthenticated" class="navbar-menu">
+        <div class="navbar-end">
+          <div class="navbar-item navbar-item-not-authenticated">
+            ようこそ
+          </div>
+        </div>
+      </div>
+      
+      <div v-if="isAuthenticated" class="navbar-menu" id="navbar-menu" :class="{'is-active': showHeaderMenu}">
         <div class="navbar-end">
           <router-link to="/summer" class="navbar-item">Summer</router-link>
           <router-link to="/winter" class="navbar-item">Winter</router-link>
@@ -34,7 +44,7 @@
       <router-view/>
     </section>
 
-    <footer class="footer">
+    <footer class="footer fix-bottom">
       <p class="has-text-centered">Copyright (c) 2024</p>
     </footer>
   </div>
@@ -42,12 +52,16 @@
 
 <script>
   import axios from 'axios'
+  import { mapState } from 'vuex';
 
   export default {
   data() {
     return {
       showHeaderMenu: false,
     }
+  },
+  computed: {
+    ...mapState(['isAuthenticated'])
   },
   beforeCreate() {
     this.$store.commit('initializeStore')
@@ -64,5 +78,5 @@
 </script>
 
 <style lang="scss">
-@import '../node_modules/bulma';
+@import '~bulma';
 </style>

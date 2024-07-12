@@ -1,21 +1,22 @@
 <template>
+  <link rel="stylesheet" href="/css/logIn.css" type="text/css">
   <div class="page-log-in">
-    <div class="columns">
+    <div class="columns log-in-area">
       <div class="column is-4 is-offset-4">
-        <h1 class="title">Log in</h1>
+        <h1 class="title">シーバス 管理画面</h1>
 
-        <form @submit.prevent="submitForm">
+        <form class="login-info" @submit.prevent="submitForm">
           <div class="field">
-            <label>ID</label>
+            <label>ログインID</label>
             <div class="control">
-              <input type="text" class="input" v-model="username">
+              <input type="text" class="input input-box" v-model="username">
             </div>
           </div>
 
           <div class="field">
-            <label>Password</label>
+            <label>パスワード</label>
             <div class="control">
-              <input type="password" class="input" v-model="password">
+              <input type="password" class="input input-box" v-model="password">
             </div>
           </div>
 
@@ -25,7 +26,7 @@
 
           <div class="field">
             <div class="control">
-              <button class="button is-dark">Log in</button>
+              <button class="button login-button column is-full">Log in</button>
             </div>
           </div>
         </form>
@@ -64,10 +65,6 @@ export default {
       }
 
       if (!this.errors.length) {
-        const formData = {
-          username: this.username,
-          password: this.password
-        }
 
         try {
           await this.login({ username: this.username, password: this.password });

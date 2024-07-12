@@ -30,7 +30,7 @@
                 <input
                   type="radio"
                   :name="`operationStatus_${index}_${status.id}`"
-                  v-model="item.operation_status_id"
+                  v-model="item.operation_status"
                   :value="status.id"
                   @change="emitUpdateDetails"/>
                   {{ status.operations_status_type }}
@@ -47,7 +47,7 @@
                 <input
                   type="radio"
                   :name="`operationStatusDetail_${index}_${detail.id}`"
-                  v-model="item.operation_status_detail_id"
+                  v-model="item.operation_status_detail"
                   :value="detail.id"
                   @change="emitUpdateDetails"/>
                   {{ detail.operation_status_detail }}
@@ -106,8 +106,8 @@ export default {
         key_id: this.details.length + k + 1,
         id: null,
         departure_time: null,
-        operation_status_id: null,
-        operation_status_detail_id: null,
+        operation_status: null,
+        operation_status_detail: null,
         detail_comment: null,
         memo: null
       }));
