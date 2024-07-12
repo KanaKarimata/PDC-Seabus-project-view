@@ -1,17 +1,19 @@
 <template>
-  <link rel="stylesheet" href="/css/timeSchedule.css" type="text/css">
+  <link rel="stylesheet" href="/css/confirm.css" type="text/css">
   <div class="columns">
     <div class="column">
-      <div>
-        <h1 class="title">{{ this.title }}</h1>
-        <button class="button">
+      <h1 class="title">{{ this.title }}</h1>
+      <div class="button-area">
+        <div class="back-button-area">
           <router-link
           :to="{
             name: 'TimeScheduleIndex',
             params: {operation_rule_id: this.$route.params.operation_rule_id}}"
-          >一覧へ戻る</router-link>
-        </button>
-        <button class="button">
+          class="button back-button"
+          ><i class="fa-solid fa-backward"></i>&ensp;一覧へ戻る</router-link>
+        </div>
+
+        <div class="edit-copy-button-area">
           <router-link
             :to="{
               name: 'UpdateForm',
@@ -20,9 +22,9 @@
                 time_schedule_id: this.$route.params.time_schedule_id,
                 type: 'copy'
               }}"
-          >複製</router-link>
-        </button>
-        <button class="button">
+            class="button copy-button"
+          ><i class="fa-solid fa-clone"></i>&ensp;複製</router-link>
+
           <router-link
             :to="{
               name: 'UpdateForm',
@@ -31,11 +33,12 @@
                 time_schedule_id: this.$route.params.time_schedule_id,
                 type: 'update'
               }}"
-          >編集</router-link>
-        </button>
+            class="button edit-button"
+          ><i class="fa-solid fa-feather"></i>&ensp;編集</router-link>
+        </div>
       </div>
 
-      <div class="card">
+      <div class="card main-contents">
         <div class="card-content">
           <div class="table detail-index-table">
             <tr>

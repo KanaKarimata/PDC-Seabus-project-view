@@ -16,16 +16,17 @@
             v-if="!this.updateFlg && !this.copyFlg"
             :to="{
             name: 'TimeScheduleIndex',
-            params: {operation_rule_id: this.$route.params.operation_rule_id}}"
+            params: {operation_rule_id: this.operation_rule_id}}"
             class="button back-button"
           ><i class="fa-solid fa-backward"></i>&ensp;一覧へ戻る</router-link>
 
           <router-link
-          :to="{
-            name: 'Confirm',
-            params: {
-              operation_rule_id: this.$route.params.operation_rule_id,
-              time_schedule_id: this.$route.params.time_schedule_id}}"
+              v-else
+            :to="{
+              name: 'Confirm',
+              params: {
+                operation_rule_id: this.operation_rule_id,
+                time_schedule_id: this.time_schedule_id}}"
             class="button back-button"
           ><i class="fa-solid fa-backward"></i>&ensp;確認画面へ戻る</router-link>
         </div>
@@ -138,20 +139,20 @@
         title: null,
         updateFlg: false,
         copyFlg: false,
-        time_schedule_id: null
+        time_schedule_id: 0
       }
     },
     created() {
       this.operation_rule = this.$route.params.operation_rule_id
-      this.time_schedule_id = this.$route.params.time_schedule_id
       console.log(this.$route.params.type)
-      console.log(this.operation_rule)
       if (this.$route.params.type) {
         if (this.$route.params.type === 'update') {
+          this.time_schedule_id = this.$route.params.time_schedule_id
           // 編集
           this.updateFlg = true
           this.getTimeScheduleData()
         } else if (this.$route.params.type === 'copy') {
+          this.time_schedule_id = this.$route.params.time_schedule_id
           // 複製
           this.copyFlg = true
           this.getTimeScheduleData()
@@ -181,7 +182,7 @@
         try {
           const response = await axiosInstance.get('http://localhost:8000/operation-rule/time-schedule-detail/index/', {
             params: {
-              time_schedule_id: this.$route.params.time_schedule_id
+              time_schedule_id: this.time_schedule_id
             }
           })
           const time_schedule = response.data.time_schedule

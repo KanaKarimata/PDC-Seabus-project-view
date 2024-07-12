@@ -1,0 +1,22 @@
+.back-button,
+.edit-button,
+.copy-button {
+  color: #0D0D0D;
+  border: 1px solid #0D0D0D;
+  box-shadow: 4px 4px #0D0D0D;
+}
+.edit-button {
+  margin-left: 2rem;
+}
+.main-contents {
+  margin-top: 3rem;
+}
+.card {
+  border: 1px solid #0D0D0D;
+}
+.button-area {
+  display: flex;
+}
+.edit-copy-button-area {
+  margin-left: auto;
+}
