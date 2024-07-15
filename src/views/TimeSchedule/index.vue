@@ -63,6 +63,9 @@ export default {
   created() {
     this.getTimeScheduleList()
   },
+  watch: {
+    '$route.params.operation_rule_id': 'getTimeScheduleList'
+  },
   methods: {
     async getTimeScheduleList() {
       try {

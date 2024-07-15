@@ -22,22 +22,29 @@
       </div>
       
       <div v-if="isAuthenticated" class="navbar-menu" id="navbar-menu" :class="{'is-active': showHeaderMenu}">
+        <!-- <div class="navbar-start">
+          <div class="navbar-item" v-for="rule in this.operationRuleList" :key="rule.id">
+            <router-link
+              :to="{
+                name: 'TimeScheduleIndex',
+                params: {operation_rule_id: rule.id}}"
+              class="tab-button"
+              :class="{'disabled-link disabled' : isDisabled(rule.id)}">
+                {{rule.operation_rule_name}}
+            </router-link>
+          </div>
+        </div> -->
         <div class="navbar-end">
-          <router-link to="/summer" class="navbar-item">Summer</router-link>
-          <router-link to="/winter" class="navbar-item">Winter</router-link>
-
           <div class="navbar-item">
             <div class="buttons">
               <router-link to="/login" class="button is-light">Log in</router-link>
-
-              <router-link to="/cart" class="button is-success">
-                <span class="icon"><i class="fas fa-shopping-cart"></i></span>
-                <span>Cart</span>
-              </router-link>
             </div>
           </div>
         </div>
       </div>
+    </nav>
+    <nav v-if="isAuthenticated">
+      <AuthenticatedHeader />
     </nav>
 
     <section class="section">
@@ -52,16 +59,24 @@
 
 <script>
   import axios from 'axios'
-  import { mapState } from 'vuex';
+  import { mapState, mapGetters, mapActions } from 'vuex';
+  import AuthenticatedHeader from './components/AuthenticatedHeader.vue'
+  // import axiosInstance from '../src/axios'
 
   export default {
   data() {
     return {
       showHeaderMenu: false,
+      // operationRuleList: [],
+      // userPermissions: []
     }
   },
+  components: {
+    AuthenticatedHeader
+  },
   computed: {
-    ...mapState(['isAuthenticated'])
+    ...mapState(['isAuthenticated']),
+    // ...mapGetters(['getEditPermission', 'getUserPermission'])
   },
   beforeCreate() {
     this.$store.commit('initializeStore')
@@ -73,6 +88,49 @@
     } else {
       axios.defaults.headers.common['Authorization'] = ""
     }
+  },
+  created() {
+    // this.getOperationRuleListData()
+  },
+  methods: {
+    // async getOperationRuleListData() {
+    //   try {
+    //     const response = await axiosInstance.get('http://localhost:8000/operation-rule/index/')
+    //     console.log('APIレスポンス:', response.data)
+    //     this.operationRuleList = response.data.operation_rules;
+    //     this.userPermissions = response.data.user_permissions;
+    //     this.commitOperationRuleList(this.operationRuleList)
+    //     this.commitUserPermission(this.userPermissions)
+    //   } catch (error) {
+    //     console.error('APIエラー:', error.response ? error.response.data : error.message)
+    //   }
+    // },
+    // isNotPermittedYokohama(id) {
+    //   for (const permission of this.getUserPermission) {
+    //     return id === 1
+    //       && this.getEditPermission.YOKOHAMA_STATION !== permission.edit_permission.id
+    //       && this.getEditPermission.MASTER !== permission.edit_permission.id
+    //   }
+    // },
+    // isNotPermittedRedBrick(id) {
+    //   for (const permission of this.getUserPermission) {
+    //     return id === 2
+    //       && this.getEditPermission.RED_BRICK !== permission.edit_permission.id
+    //       && this.getEditPermission.MASTER !== permission.edit_permission.id
+    //   }
+    // },
+    // isNotPermittedYamashitaPark(id) {
+    //   for (const permission of this.getUserPermission) {
+    //     return id === 3
+    //       && this.getEditPermission.YAMASHITA_PARK !== permission.edit_permission.id
+    //       && this.getEditPermission.MASTER !== permission.edit_permission.id
+    //   }
+    // },
+    // isDisabled(id) {
+    //   return this.isNotPermittedYokohama(id)
+    //       || this.isNotPermittedRedBrick(id)
+    //       || this.isNotPermittedYamashitaPark(id)
+    // }
   }
 }
 </script>

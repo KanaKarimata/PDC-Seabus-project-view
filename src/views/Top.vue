@@ -1,87 +1,82 @@
 <template>
   <link rel="stylesheet" href="/css/top.css" type="text/css">
-  <div class="columns" v-for="rule in this.operationRuleList" :key="rule.id">
+  <div class="columns" v-for="rule in this.getOperationRuleList" :key="rule.id">
     <div class="column is-8 is-offset-2">
-         <router-link
-          :to="{
-            name: 'TimeScheduleIndex',
-            params: {operation_rule_id: rule.id}}"
-          class="button index-button column is-full"
-          :class="{'disabled-link' : isDisabled(rule.id)}">
-            <i class="fa-solid fa-anchor icon-size"></i>
-            &emsp;{{rule.operation_rule_name}}
-        </router-link>
+      <router-link
+        :to="{
+          name: 'TimeScheduleIndex',
+          params: {operation_rule_id: rule.id}}"
+        class="button index-button column is-full"
+        :class="{'disabled-link disabled' : isDisabled(rule.id)}">
+          <i class="fa-solid fa-anchor icon-size"></i>
+          &emsp;{{rule.operation_rule_name}}
+      </router-link>
     </div>
   </div>
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
   import axiosInstance from '../../src/axios'
+  import { mapGetters, mapActions } from 'vuex';
+  import AuthenticatedHeader from '../components/AuthenticatedHeader.vue'
 
   export default {
     name: 'OperationRuleIndex',
     data() {
       return {
-        operationRuleList: [],
-        userPermissions: []
+        // operationRuleList: [],
+        // userPermissions: []
       }
     },
-    created() {
-      this.getOperationRuleList()
+    components: {
+      AuthenticatedHeader
     },
     computed: {
-      ...mapGetters(['getEditPermission']),
+      ...mapGetters(['getEditPermission', 'getUserPermission', 'getOperationRuleList'])
+    },
+    created() {
+      this.getOperationRuleListData()
     },
     methods: {
-      async getOperationRuleList() {
+      ...mapActions(['commitOperationRuleList', 'commitUserPermission']),
+      async getOperationRuleListData() {
         try {
           const response = await axiosInstance.get('http://localhost:8000/operation-rule/index/')
           console.log('APIレスポンス:', response.data)
-          this.operationRuleList = response.data.operation_rules;
-          this.userPermissions = response.data.user_permissions;
+          // this.operationRuleList = response.data.operation_rules;
+          // this.userPermissions = response.data.user_permissions;
+          this.commitOperationRuleList(response.data.operation_rules)
+          this.commitUserPermission(response.data.user_permissions)
         } catch (error) {
           console.error('APIエラー:', error.response ? error.response.data : error.message)
         }
       },
-      isNotPermittedToYokohama(id) {
-        return id === 1
-          && this.getEditPermission.TO_YOKOHAMA_STATION !== this.userPermissions[0].edit_permission.id
-          && this.getEditPermission.MASTER !== this.userPermissions[0].edit_permission.id
+      isNotPermittedYokohama(id) {
+        for (const permission of this.getUserPermission) {
+          return id === 1
+            && this.getEditPermission.YOKOHAMA_STATION !== permission.edit_permission.id
+            && this.getEditPermission.MASTER !== permission.edit_permission.id
+        }
       },
-      isNotPermittedFromBrickToYamashitaPark(id) {
-        return id === 2
-          && this.getEditPermission.FROM_RED_BRICK_TO_YAMASHITA_PARK !== this.userPermissions[0].edit_permission.id
-          && this.getEditPermission.MASTER !== this.userPermissions[0].edit_permission.id
+      isNotPermittedRedBrick(id) {
+        for (const permission of this.getUserPermission) {
+          return id === 2
+            && this.getEditPermission.RED_BRICK !== permission.edit_permission.id
+            && this.getEditPermission.MASTER !== permission.edit_permission.id
+        }
       },
-      isNotPermittedFromBrickToHammerHead(id) {
-        return id === 3
-          && this.getEditPermission.FROM_RED_BRICK_TO_HAMMER_HEAD !== this.userPermissions[0].edit_permission.id
-          && this.getEditPermission.MASTER !== this.userPermissions[0].edit_permission.id
-      },
-      isNotPermittedToYamashitaPark(id) {
-        return id === 4
-          && this.getEditPermission.TO_YAMASHITA_PARK !== this.userPermissions[0].edit_permission.id
-          && this.getEditPermission.MASTER !== this.userPermissions[0].edit_permission.id
+      isNotPermittedYamashitaPark(id) {
+        for (const permission of this.getUserPermission) {
+          return id === 3
+            && this.getEditPermission.YAMASHITA_PARK !== permission.edit_permission.id
+            && this.getEditPermission.MASTER !== permission.edit_permission.id
+        }
       },
       isDisabled(id) {
-        return this.isNotPermittedToYokohama(id)
-            || this.isNotPermittedFromBrickToYamashitaPark(id)
-            || this.isNotPermittedFromBrickToHammerHead(id)
-            || this.isNotPermittedToYamashitaPark(id)
+        return this.isNotPermittedYokohama(id)
+            || this.isNotPermittedRedBrick(id)
+            || this.isNotPermittedYamashitaPark(id)
       }
     }
   }
 </script>
-<!-- 
-<style>
-.disabled-link {
-  pointer-events: none;
-  cursor: not-allowed;
-}
-.disabled {
-  opacity: 0.5;
-  pointer-events: none;
-  cursor: not-allowed;
-}
-</style> -->

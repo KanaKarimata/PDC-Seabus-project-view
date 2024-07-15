@@ -6,22 +6,21 @@ export default createStore({
     isAuthenticated: false,
     accessToken: localStorage.getItem('accessToken') || '',
     refreshToken: localStorage.getItem('refreshToken') || '',
-    selectedTime: '',
-    selectedStartDateTime: '',
-    selectedEndDateTime: '',
     editPermissionEnum: {
       MASTER: 6,
-      TO_YOKOHAMA_STATION: 2,
-      FROM_RED_BRICK_TO_YAMASHITA_PARK: 3,
-      FROM_RED_BRICK_TO_HAMMER_HEAD: 4,
-      TO_YAMASHITA_PARK: 5
-    }
+      YOKOHAMA_STATION: 2,
+      RED_BRICK: 3,
+      YAMASHITA_PARK: 4
+    },
+    userPermission: [],
+    operationRuleList: [],
+    operationRuleName: null
   },
   getters: {
-    selectedTime: state => state.selectedTime,
-    selectedStartDateTime: state => state.selectedStartDateTime,
-    selectedEndDateTime: state => state.selectedEndDateTime,
-    getEditPermission: state => state.editPermissionEnum
+    getEditPermission: state => state.editPermissionEnum,
+    getUserPermission: state => state.userPermission,
+    getOperationRuleList: state => state.operationRuleList,
+    getOperationRuleName: state => state.operationRuleName
   },
   mutations: {
     setAuthenticate(state) {
@@ -56,17 +55,14 @@ export default createStore({
         state.refreshToken = '';
       }
     },
-    SET_SELECTED_TIME(state, value) {
-      state.selectedTime = value
+    setUserPermission(state, data) {
+      state.userPermission = data
     },
-    SET_SELECTED_START_DATETIME(state, value) {
-      state.selectedStartDateTime = value
+    setOperationRuleList(state, data) {
+      state.operationRuleList = data
     },
-    SET_SELECTED_END_DATETIME(state, value) {
-      state.selectedEndDateTime = value
-    },
-    updateScheduleDetail(state, { index, data }) {
-      state.scheduleDetails[index] = { ...state.scheduleDetails[index], ...data };
+    setOperationRuleName(state, data) {
+      state.operationRuleName = data
     }
   },
   actions: {
@@ -83,14 +79,24 @@ export default createStore({
     logout({ commit }) {
       commit('clearTokens');
     },
-    updateSelectedTime({ commit }, value) {
-      commit('SET_SELECTED_TIME', value);
+    async getOperationRuleListData({ commit }) {
+      try {
+        const response = await axiosInstance.get('http://localhost:8000/operation-rule/index/')
+        console.log('APIレスポンス:', response.data)
+        commit('setOperationRuleList', response.data.operation_rules);
+        commit('setUserPermission', response.data.user_permissions);
+      } catch (error) {
+        console.error('APIエラー:', error.response ? error.response.data : error.message)
+      }
     },
-    updateSelectedStartDateTime({ commit }, value) {
-      commit('SET_SELECTED_START_DATETIME', value);
-    },
-    updateSelectedEndDateTime({ commit }, value) {
-      commit('SET_SELECTED_END_DATETIME', value);
+    async getOperationRuleInfo({ commit }, operation_rule_id) {
+      try {
+        const response = await axiosInstance.get(`http://localhost:8000/operation-rule/info/${operation_rule_id}/`)
+        console.log('APIレスポンス:', response.data)
+        commit('setOperationRuleName', response.data.operation_rule_name);
+      } catch (error) {
+        console.error('APIエラー:', error.response ? error.response.data : error.message)
+      }
     },
   },
   modules: {

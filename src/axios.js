@@ -1,6 +1,7 @@
 import axios from 'axios';
 import store from './store';
 import router from './router';
+import { toast } from 'bulma-toast'
 
 const axiosInstance = axios.create({
   baseURL: 'http://localhost:8000/api', // Django REST FrameworkのAPIのベースURLを設定

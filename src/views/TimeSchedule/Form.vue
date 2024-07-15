@@ -5,7 +5,7 @@
       <div class="column is-10 is-offset-1">
 
         <h1 class="title">
-          {{ this.title }}
+          {{ this.getOperationRuleName }}
           <span v-if="this.updateFlg">[編集]</span>
           <span v-else-if="this.copyFlg">[複製]</span>
           <span v-else>[新規]</span>
@@ -109,6 +109,7 @@
   import axiosInstance from '../../axios'
   import ScheduleDetailForm from '../../components/ScheduleDetailForm.vue';
   import DatetimePicker from 'vue-ctk-date-time-picker';
+  import { mapGetters, mapActions } from 'vuex';
   import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css';
 
   export default {
@@ -126,8 +127,8 @@
           key_id: k + 1,
           id: null,
           departure_time: null,
-          operation_status: null,
-          operation_status_detail: null,
+          operation_status_id: 0,
+          operation_status_detail_id: 0,
           detail_comment: null,
           memo: null
         })),
@@ -161,7 +162,11 @@
         }
       }
     },
+    computed: {
+      ...mapGetters(['getOperationRuleName'])
+    },
     methods: {
+      ...mapActions(['getOperationRuleInfo']),
       handleUpdateDetails(details) {
         this.time_schedule_detail = details;
       },
@@ -174,6 +179,7 @@
           const response = await axiosInstance.get('http://localhost:8000/operation-rule/time-schedule/master/')
           this.operation_status = response.data.operation_status
           this.operation_status_detail = response.data.operation_status_detail
+          this.getOperationRuleInfo(this.this.operation_rule)
         } catch (error) {
           console.error('APIエラー:', error.response ? error.response.data : error.message)
         }
@@ -197,15 +203,14 @@
             key_id: index + 1,
             id: item.id,
             departure_time: item.departure_time,
-            operation_status: item.operation_status,
-            operation_status_detail: item.operation_status_detail,
+            operation_status_id: item.operation_status_id,
+            operation_status_detail_id: item.operation_status_detail_id,
             detail_comment: item.detail_comment,
             memo: item.memo
           }));
           this.time_schedule_detail = formattedData
 
-          console.log('時刻表詳細')
-          console.log(this.time_schedule_detail)
+          this.getOperationRuleInfo(this.this.operation_rule)
 
         } catch (error) {
           console.error('APIエラー:', error.response ? error.response.data : error.message)
@@ -214,8 +219,8 @@
       async registerOnly() {
         let timeScheduleRequestData = this.time_schedule_detail.filter(item =>
           item.departure_time !== null ||
-          item.operation_status_id !== null ||
-          item.operation_status_detail_id !== null ||
+          item.operation_status_id !== 0 ||
+          item.operation_status_detail_id !== 0 ||
           item.detail_comment !== null ||
           item.memo !== null
         )
@@ -231,6 +236,7 @@
         }
       },
       async create(timeScheduleRequestData) {
+        console.log(timeScheduleRequestData)
         let formData = timeScheduleRequestData.map(item => ({
           ...item,
           id: item.id !== null ? null : item.id
@@ -263,6 +269,7 @@
         }
       },
       async update(timeScheduleRequestData) {
+        console.log(timeScheduleRequestData)
         try {
           const timeScheduleId = this.time_schedule_id;
           const response = await axiosInstance.put(`http://localhost:8000/operation-rule/time-schedule-update/${timeScheduleId}/`, {

@@ -2,7 +2,7 @@
   <link rel="stylesheet" href="/css/confirm.css" type="text/css">
   <div class="columns">
     <div class="column">
-      <h1 class="title">{{ this.title }}</h1>
+      <h1 class="title">{{ this.getOperationRuleName }}</h1>
       <div class="button-area">
         <div class="back-button-area">
           <router-link
@@ -45,23 +45,23 @@
               <td>運航ルール名</td>
               <td>{{ this.time_schedule_name }}</td>
             </tr>
-          </div>
-          <div class="table" v-for="(item, index) in this.timeScheduleDetailList" :key="item.id">
             <tr>
               <td>終日運休ボタンチェック</td>
               <td>チェックを入れるとサイネージが終日運休画面に変わります</td>
             </tr>
+          </div>
+          <div class="table" v-for="(item, index) in this.timeScheduleDetailList" :key="item.id">
             <tr>
               <td>No.{{ index + 1 }} [時間]</td>
               <td>{{ formatDate(item.departure_time) }}</td>
             </tr>
             <tr>
               <td>No.{{ index + 1 }} [運航状況]</td>
-              <td>{{ item.operation_status_info.operations_status_type }}</td>
+              <td>{{ item.operation_status_info ? item.operation_status_info.operations_status_type : '' }}</td>
             </tr>
             <tr>
               <td>No.{{ index + 1 }} [詳細]</td>
-              <td>{{ item.operation_status_detail_info.operation_status_detail }}</td>
+              <td>{{ item.operation_status_detail_info ? item.operation_status_detail_info.operation_status_detail : '' }}</td>
             </tr>
             <tr>
               <td>No.{{ index + 1 }} [詳細コメント]</td>
@@ -96,6 +96,7 @@
 <script>
 import axiosInstance from '../../../src/axios'
 import moment from 'moment';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'Confirm',
@@ -108,7 +109,11 @@ export default {
   created() {
     this.getTimeScheduleDetailList()
   },
+  computed: {
+    ...mapGetters(['getOperationRuleName'])
+  },
   methods: {
+    ...mapActions(['getOperationRuleInfo']),
     async getTimeScheduleDetailList() {
       try {
         const response = await axiosInstance.get('http://localhost:8000/operation-rule/time-schedule-detail/index/', {
@@ -118,6 +123,7 @@ export default {
         console.log('APIレスポンス:', response.data)
         this.timeScheduleDetailList = response.data.scheduleDetails
         this.time_schedule_name = response.data.time_schedule.time_schedule_name
+        this.getOperationRuleInfo(this.$route.params.operation_rule_id)
       } catch (error) {
         console.error('APIエラー:', error.response ? error.response.data : error.message)
       }
