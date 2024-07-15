@@ -45,15 +45,20 @@ body,
 }
 .tab-nav {
   padding: 0 40px;
+  min-height: 3.5rem;
 }
 .tab-button {
-  background: #FFE099;
+  background: #fff;
   border-radius: 30px;
   border: 1px solid #FFE099;
-  color: 0D0D0D;
+  color: #0D0D0D;
   font-weight: bold;
+  font-size: 0.8rem;
 }
 .navbar-item-not-authenticated {
   color: #fff;
   font-weight: bold;
+}
+.onPage {
+  background: #FFE099;
 }

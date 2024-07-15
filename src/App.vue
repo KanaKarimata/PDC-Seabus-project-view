@@ -22,22 +22,10 @@
       </div>
       
       <div v-if="isAuthenticated" class="navbar-menu" id="navbar-menu" :class="{'is-active': showHeaderMenu}">
-        <!-- <div class="navbar-start">
-          <div class="navbar-item" v-for="rule in this.operationRuleList" :key="rule.id">
-            <router-link
-              :to="{
-                name: 'TimeScheduleIndex',
-                params: {operation_rule_id: rule.id}}"
-              class="tab-button"
-              :class="{'disabled-link disabled' : isDisabled(rule.id)}">
-                {{rule.operation_rule_name}}
-            </router-link>
-          </div>
-        </div> -->
         <div class="navbar-end">
           <div class="navbar-item">
             <div class="buttons">
-              <router-link to="/login" class="button is-light">Log in</router-link>
+              <button class="button is-light" @click="this.executeLogout()">Log out</button>
             </div>
           </div>
         </div>
@@ -60,23 +48,20 @@
 <script>
   import axios from 'axios'
   import { mapState, mapGetters, mapActions } from 'vuex';
-  import AuthenticatedHeader from './components/AuthenticatedHeader.vue'
-  // import axiosInstance from '../src/axios'
+  import AuthenticatedHeader from './components/AuthenticatedHeader.vue';
+  import { toast } from 'bulma-toast'
 
   export default {
   data() {
     return {
       showHeaderMenu: false,
-      // operationRuleList: [],
-      // userPermissions: []
     }
   },
   components: {
     AuthenticatedHeader
   },
   computed: {
-    ...mapState(['isAuthenticated']),
-    // ...mapGetters(['getEditPermission', 'getUserPermission'])
+    ...mapState(['isAuthenticated'])
   },
   beforeCreate() {
     this.$store.commit('initializeStore')
@@ -89,48 +74,32 @@
       axios.defaults.headers.common['Authorization'] = ""
     }
   },
-  created() {
-    // this.getOperationRuleListData()
-  },
   methods: {
-    // async getOperationRuleListData() {
-    //   try {
-    //     const response = await axiosInstance.get('http://localhost:8000/operation-rule/index/')
-    //     console.log('APIレスポンス:', response.data)
-    //     this.operationRuleList = response.data.operation_rules;
-    //     this.userPermissions = response.data.user_permissions;
-    //     this.commitOperationRuleList(this.operationRuleList)
-    //     this.commitUserPermission(this.userPermissions)
-    //   } catch (error) {
-    //     console.error('APIエラー:', error.response ? error.response.data : error.message)
-    //   }
-    // },
-    // isNotPermittedYokohama(id) {
-    //   for (const permission of this.getUserPermission) {
-    //     return id === 1
-    //       && this.getEditPermission.YOKOHAMA_STATION !== permission.edit_permission.id
-    //       && this.getEditPermission.MASTER !== permission.edit_permission.id
-    //   }
-    // },
-    // isNotPermittedRedBrick(id) {
-    //   for (const permission of this.getUserPermission) {
-    //     return id === 2
-    //       && this.getEditPermission.RED_BRICK !== permission.edit_permission.id
-    //       && this.getEditPermission.MASTER !== permission.edit_permission.id
-    //   }
-    // },
-    // isNotPermittedYamashitaPark(id) {
-    //   for (const permission of this.getUserPermission) {
-    //     return id === 3
-    //       && this.getEditPermission.YAMASHITA_PARK !== permission.edit_permission.id
-    //       && this.getEditPermission.MASTER !== permission.edit_permission.id
-    //   }
-    // },
-    // isDisabled(id) {
-    //   return this.isNotPermittedYokohama(id)
-    //       || this.isNotPermittedRedBrick(id)
-    //       || this.isNotPermittedYamashitaPark(id)
-    // }
+    ...mapActions(['logout']),
+    executeLogout() {
+      try {
+        this.logout()
+        toast({
+          message: 'ログアウトしました。',
+          type: 'is-success',
+          dismissible: true,
+          pauseOnHover: true,
+          duration: 2000,
+          position: 'bottom-right',
+        });
+
+        this.$router.push('/');
+      } catch {
+        toast({
+          message: 'ログアウトに失敗しました。',
+          type: 'is-danger',
+          dismissible: true,
+          pauseOnHover: true,
+          duration: 2000,
+          position: 'bottom-right',
+        });
+      }
+    }
   }
 }
 </script>

@@ -1,14 +1,24 @@
 <template>
-  <nav class="navbar">
+  <nav class="navbar tab-nav">
     <div class="navbar-menu">
       <div class="navbar-start">
+        <div class="navbar-item">
+          <router-link
+            :to="{name: 'Top'}"
+            active-class="onPage"
+            class="button tab-button">
+              TOP
+          </router-link>
+        </div>
         <div class="navbar-item" v-for="rule in this.getOperationRuleList" :key="rule.id">
           <router-link
             :to="{
               name: 'TimeScheduleIndex',
               params: {operation_rule_id: rule.id}}"
             class="button tab-button"
-            :class="{'disabled-link disabled' : isDisabled(rule.id)}">
+            active-class="onPage"
+            :class="{'disabled-link disabled' : isDisabled(rule.id)}"
+            @click.native="setActivePage(rule.id)">
               {{rule.operation_rule_name}}
           </router-link>
         </div>
@@ -22,6 +32,11 @@ import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'AuthenticatedHeader',
+  data() {
+    return {
+      // onPageFlg: null
+    }
+  },
   computed: {
     ...mapGetters(['getEditPermission', 'getUserPermission', 'getOperationRuleList'])
   },
@@ -30,6 +45,12 @@ export default {
   },
   methods: {
     ...mapActions(['getOperationRuleListData']),
+    setActivePage(id) {
+      this.activePageId = id;
+    },
+    isThePage(id) {
+      return this.activePageId === id;
+    },
     isNotPermittedYokohama(id) {
       for (const permission of this.getUserPermission) {
         return id === 1

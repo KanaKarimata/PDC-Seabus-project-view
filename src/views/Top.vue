@@ -35,22 +35,22 @@
       ...mapGetters(['getEditPermission', 'getUserPermission', 'getOperationRuleList'])
     },
     created() {
-      this.getOperationRuleListData()
+      // this.getOperationRuleListData()
     },
     methods: {
-      ...mapActions(['commitOperationRuleList', 'commitUserPermission']),
-      async getOperationRuleListData() {
-        try {
-          const response = await axiosInstance.get('http://localhost:8000/operation-rule/index/')
-          console.log('APIレスポンス:', response.data)
-          // this.operationRuleList = response.data.operation_rules;
-          // this.userPermissions = response.data.user_permissions;
-          this.commitOperationRuleList(response.data.operation_rules)
-          this.commitUserPermission(response.data.user_permissions)
-        } catch (error) {
-          console.error('APIエラー:', error.response ? error.response.data : error.message)
-        }
-      },
+      // ...mapActions(['commitOperationRuleList', 'commitUserPermission']),
+      // async getOperationRuleListData() {
+      //   try {
+      //     const response = await axiosInstance.get('http://localhost:8000/operation-rule/index/')
+      //     console.log('APIレスポンス:', response.data)
+      //     // this.operationRuleList = response.data.operation_rules;
+      //     // this.userPermissions = response.data.user_permissions;
+      //     this.commitOperationRuleList(response.data.operation_rules)
+      //     this.commitUserPermission(response.data.user_permissions)
+      //   } catch (error) {
+      //     console.error('APIエラー:', error.response ? error.response.data : error.message)
+      //   }
+      // },
       isNotPermittedYokohama(id) {
         for (const permission of this.getUserPermission) {
           return id === 1

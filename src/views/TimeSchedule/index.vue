@@ -42,7 +42,9 @@
         <div class="column is-2">{{ formatDate(item.publish_start_date) }}</div>
         <div class="column is-2">{{ formatDate(item.publish_end_date) }}</div>
         <div class="column is-1">{{ item.update_user.username }}</div>
-        <div class="column is-1">アクション</div>
+        <div class="column is-1">
+          <button class="button" @click="confirmDelete(item.id)">削除</button>
+        </div>
       </div>
     </div>
   </div>
@@ -51,6 +53,7 @@
 <script>
 import axiosInstance from '../../../src/axios'
 import moment from 'moment';
+import { toast } from 'bulma-toast'
 
 export default {
   name: 'TimeScheduleIndex',
@@ -82,6 +85,29 @@ export default {
     },
     formatDate(date) {
       return moment(date).format('YYYY/MM/DD HH:mm');
+    },
+    confirmDelete(id) {
+      const isConfirmed = confirm('削除します。よろしいですか？')
+      if (isConfirmed) {
+        this.executeDelete(id)
+      }
+    },
+    async executeDelete(id) {
+      try {
+        const response = await axiosInstance.delete(`http://localhost:8000/operation-rule/time-schedule/delete/${id}`)
+
+        toast({
+          message: '削除しました',
+          type: 'is-success',
+          dismissible: true,
+          pauseOnHover: true,
+          duration: 2000,
+          position: 'bottom-right',
+        });
+        this.getTimeScheduleList()
+      } catch (error) {
+        console.error('APIエラー:', error.response ? error.response.data : error.message)
+      }
     }
   }
 }
