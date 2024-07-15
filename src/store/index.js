@@ -90,13 +90,13 @@ export default createStore({
       }
     },
     async getOperationRuleInfo({ commit }, operation_rule_id) {
-      // try {
-      //   const response = await axiosInstance.get(`http://localhost:8000/operation-rule/info/${operation_rule_id}/`)
-      //   console.log('APIレスポンス:', response.data)
-      //   commit('setOperationRuleName', response.data.operation_rule_name);
-      // } catch (error) {
-      //   console.error('APIエラー:', error.response ? error.response.data : error.message)
-      // }
+      try {
+        const response = await axiosInstance.get(`http://localhost:8000/operation-rule/info/${operation_rule_id}/`)
+        console.log('APIレスポンス:', response.data)
+        commit('setOperationRuleName', response.data.operation_rule_name);
+      } catch (error) {
+        console.error('APIエラー:', error.response ? error.response.data : error.message)
+      }
     },
   },
   modules: {

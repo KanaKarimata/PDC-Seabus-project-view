@@ -179,7 +179,7 @@
           const response = await axiosInstance.get('http://localhost:8000/operation-rule/time-schedule/master/')
           this.operation_status = response.data.operation_status
           this.operation_status_detail = response.data.operation_status_detail
-          this.getOperationRuleInfo(this.this.operation_rule)
+          this.getOperationRuleInfo(this.operation_rule)
         } catch (error) {
           console.error('APIエラー:', error.response ? error.response.data : error.message)
         }
@@ -210,7 +210,7 @@
           }));
           this.time_schedule_detail = formattedData
 
-          this.getOperationRuleInfo(this.this.operation_rule)
+          this.getOperationRuleInfo(this.operation_rule)
 
         } catch (error) {
           console.error('APIエラー:', error.response ? error.response.data : error.message)

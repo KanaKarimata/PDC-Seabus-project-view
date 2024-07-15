@@ -108,6 +108,7 @@ export default {
   },
   created() {
     this.getTimeScheduleDetailList()
+    this.getOperationRuleInfo(this.$route.params.operation_rule_id)
   },
   computed: {
     ...mapGetters(['getOperationRuleName'])
@@ -123,7 +124,6 @@ export default {
         console.log('APIレスポンス:', response.data)
         this.timeScheduleDetailList = response.data.scheduleDetails
         this.time_schedule_name = response.data.time_schedule.time_schedule_name
-        this.getOperationRuleInfo(this.$route.params.operation_rule_id)
       } catch (error) {
         console.error('APIエラー:', error.response ? error.response.data : error.message)
       }

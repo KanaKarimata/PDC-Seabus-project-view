@@ -17,7 +17,7 @@
               params: {operation_rule_id: rule.id}}"
             class="button tab-button"
             active-class="onPage"
-            :class="{'disabled-link disabled' : isDisabled(rule.id)}"
+            :class="{'disabled-link disabled' : isDisabled(rule.id), 'onPage': isCurrentPage(rule.id)}"
             @click.native="setActivePage(rule.id)">
               {{rule.operation_rule_name}}
           </router-link>
@@ -45,6 +45,11 @@ export default {
   },
   methods: {
     ...mapActions(['getOperationRuleListData']),
+    isCurrentPage(id) {
+      const currentId = this.$route.params.operation_rule_id;
+      console.log(currentId)
+      return currentId == id;
+    },
     setActivePage(id) {
       this.activePageId = id;
     },
