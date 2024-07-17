@@ -140,7 +140,8 @@
         title: null,
         updateFlg: false,
         copyFlg: false,
-        time_schedule_id: 0
+        time_schedule_id: 0,
+        publish_status_id: 0
       }
     },
     created() {
@@ -216,7 +217,15 @@
           console.error('APIエラー:', error.response ? error.response.data : error.message)
         }
       },
-      async registerOnly() {
+      registerAndPublish() {
+        this.publish_status_id = 1
+        this.executeAction()
+      },
+      registerOnly() {
+        this.publish_status_id = 0
+        this.executeAction()
+      },
+      executeAction() {
         let timeScheduleRequestData = this.time_schedule_detail.filter(item =>
           item.departure_time !== null ||
           item.operation_status_id !== 0 ||
@@ -248,14 +257,14 @@
             time_schedule_name: this.time_schedule_name,
             out_of_service_flg: this.out_of_service_flg,
             time_schedule_detail: formData,
-            publish_status_id: 0,
+            publish_status_id: this.publish_status_id,
             publish_start_date: this.publish_start_date,
             publish_end_date: this.publish_end_date
           })
           console.log('APIレスポンス:', response.data)
           console.log('レスポンス:', response)
           if (response.status === 201) {
-            let timeScheduleId = response.data.id; 
+            let timeScheduleId = response.data.id;
             this.$router.push({
               name: 'Confirm',
               params: {
@@ -277,7 +286,7 @@
             time_schedule_name: this.time_schedule_name,
             out_of_service_flg: this.out_of_service_flg,
             time_schedule_detail: timeScheduleRequestData,
-            publish_status_id: 0,
+            publish_status_id: this.publish_status_id,
             publish_start_date: this.publish_start_date,
             publish_end_date: this.publish_end_date
           })

@@ -31,8 +31,9 @@
   line-height: 1.5rem;
 }
 .publish {
-  background: #FFE099;
+  background: #FD8100;
   color: #0D0D0D;
+  font-weight: bold;
   text-align: center;
   border-radius: 30px;
   font-size: 14px;
