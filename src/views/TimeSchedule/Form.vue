@@ -32,13 +32,24 @@
         </div>
 
         <form class="create-update-form-area" @submit.prevent="submitForm" style="font-size: 14px;">
-          <div class="card" style="height: 11000px;">
-            <div class="card-content" style="height: 11000px;">
-              <div style="height: 10740px;">
+          <div class="card" style="height: 10400px;">
+            <div class="card-content" style="height: 10400px;">
+              <div style="height: 10050px;">
                 <div class="field">
                   <label>運行ルール名</label>
                   <div class="control">
                     <input type="text" class="input" v-model="time_schedule_name">
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label>行き先</label>
+                  <div class="control">
+                    <div class="select is-rounded">
+                      <select v-model="destination_id">
+                        <option v-for="destination in this.destination" :value="destination.id">{{ destination.destination_name }}</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
 
@@ -51,14 +62,24 @@
                     </label>
                   </div>
                 </div>
-  
+
                 <hr>
-  
+
                 <ScheduleDetailForm
                   :details="time_schedule_detail"
                   :operation_status="operation_status"
                   :operation_status_detail="operation_status_detail"
                   @updateDetails="handleUpdateDetails"/>
+              </div>
+
+              <div class="field">
+                <label>土日運航ボタン</label>
+                <div class="box column is-3">
+                  <label class="checkbox">
+                    <input type="checkbox" v-model="publish_holiday_flg">
+                      土日運航
+                  </label>
+                </div>
               </div>
 
               <div class="field">
@@ -123,6 +144,8 @@
         operation_rule: null,
         time_schedule_name: null,
         out_of_service_flg: false,
+        publish_holiday_flg: false,
+        destination_id: 0,
         time_schedule_detail: Array.from({ length: 20 }, (v, k) => ({
           key_id: k + 1,
           id: null,
@@ -137,6 +160,7 @@
         publish_end_date: null,
         operation_status: [],
         operation_status_detail: [],
+        destination: [],
         title: null,
         updateFlg: false,
         copyFlg: false,
@@ -180,6 +204,8 @@
           const response = await axiosInstance.get('http://localhost:8000/operation-rule/time-schedule/master/')
           this.operation_status = response.data.operation_status
           this.operation_status_detail = response.data.operation_status_detail
+          this.destination = response.data.destination
+          console.log('destination' + this.destination)
           this.getOperationRuleInfo(this.operation_rule)
         } catch (error) {
           console.error('APIエラー:', error.response ? error.response.data : error.message)
@@ -194,11 +220,14 @@
           })
           const time_schedule = response.data.time_schedule
           this.time_schedule_name = time_schedule.time_schedule_name
+          this.destination_id = time_schedule.destination
           this.out_of_service_flg = time_schedule.out_of_service_flg
+          this.publish_holiday_flg = time_schedule.publish_holiday_flg
           this.publish_start_date = time_schedule.publish_start_date
           this.publish_end_date = time_schedule.publish_end_date
           this.operation_status = response.data.operation_status
           this.operation_status_detail = response.data.operation_status_detail
+          this.destination = response.data.destination
           this.title = response.data.operation_rule_name
           const formattedData = response.data.scheduleDetails.map((item, index) => ({
             key_id: index + 1,
@@ -255,7 +284,9 @@
           const response = await axiosInstance.post('http://localhost:8000/operation-rule/time-schedule-create/', {
             operation_rule: this.operation_rule,
             time_schedule_name: this.time_schedule_name,
+            destination: this.destination_id,
             out_of_service_flg: this.out_of_service_flg,
+            publish_holiday_flg: this.publish_holiday_flg,
             time_schedule_detail: formData,
             publish_status_id: this.publish_status_id,
             publish_start_date: this.publish_start_date,

@@ -24,7 +24,14 @@
 
         <div class="field">
           <label>No.{{ index + 1 }} [運行状況]</label>
-          <div v-for="(group, i) in chunkedOperationStatus" :key="i"  class="columns">
+          <div class="control">
+            <div class="select is-rounded">
+              <select v-model="item.operation_status_id" @change="setOperationStatusDetail(item)">
+                <option v-for="status in this.operation_status" :value="status.id">{{ status.operations_status_type }}</option>
+              </select>
+            </div>
+          </div>
+          <!-- <div v-for="(group, i) in chunkedOperationStatus" :key="i"  class="columns">
             <div v-for="status in group" :key="status.id" class="column">
               <label class="radio">
                 <input
@@ -36,12 +43,19 @@
                   {{ status.operations_status_type }}
               </label>
             </div>
-          </div>
+          </div> -->
         </div>
 
         <div class="field">
           <label>No.{{ index + 1 }} [詳細]</label>
-          <div v-for="(group, i) in chunkedOperationStatusDetail" :key="i" class="columns">
+          <div class="control">
+            <div class="select is-rounded">
+              <select v-model="item.operation_status_detail_id">
+                <option v-for="detail in this.operation_status_detail" :value="detail.id">{{ detail.operation_status_detail }}</option>
+              </select>
+            </div>
+          </div>
+          <!-- <div v-for="(group, i) in chunkedOperationStatusDetail" :key="i" class="columns">
             <div v-for="detail in group" :key="detail.id" class="column">
               <label class="radio">
                 <input
@@ -53,7 +67,7 @@
                   {{ detail.operation_status_detail }}
               </label>
             </div>
-          </div>
+          </div> -->
         </div>
 
         <div class="field">
@@ -127,6 +141,13 @@ export default {
     },
     emitUpdateDetails() {
       this.$emit('updateDetails', this.expandedDetails)
+    },
+    setOperationStatusDetail(item) {
+      if (item.operation_status_id == 1) {
+        item.operation_status_detail_id = 12
+      } else {
+        item.operation_status_detail_id = 0
+      }
     },
     chunkArray(array, size) {
       const chunkedArray = [];
