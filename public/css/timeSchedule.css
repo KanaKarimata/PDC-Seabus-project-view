@@ -69,3 +69,10 @@
   border: 2px solid #F18900;
   border-radius: 30px;
 }
+.action-area,
+.control-data {
+  display: flex;
+}
+.control-data {
+  margin-left: auto;
+}

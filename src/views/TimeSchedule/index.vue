@@ -4,34 +4,45 @@
     <div class="column is-full">
       <h1 class="title">{{ this.title }}</h1>
       <div class="main-contents">
-        <router-link :to="{
-          name: 'Form',
-          params: {
-            operation_rule_id: this.$route.params.operation_rule_id,
-            type: 'create'
-          }}"
-        class="button create-button"><i class="fa-solid fa-feather"></i>&ensp;新規作成</router-link>
+        <div class="action-area">
+          <router-link :to="{
+            name: 'Form',
+            params: {
+              operation_rule_id: this.$route.params.operation_rule_id,
+              type: 'create'
+            }}"
+          class="button create-button"><i class="fa-solid fa-feather"></i>&ensp;新規作成</router-link>
 
-        <div class="dropdown is-hoverable is-right sort-button-area">
-          <div class="dropdown-trigger">
-            <button class="button sort-button" aria-haspopup="true" aria-controls="dropdown-menu">
-              <span>表示順</span>
-              <span class="icon is-small">
-                <i class="fas fa-angle-down" aria-hidden="true"></i>
-              </span>
-            </button>
-          </div>
-          <div class="dropdown-menu" id="dropdown-menu" role="menu">
-            <div class="dropdown-content">
-              <a class="dropdown-item" @click="sortNameAsc()">運航ルール名　昇順</a>
-              <a class="dropdown-item" @click="sortNameDesc()">運航ルール名　降順</a>
-              <a class="dropdown-item" @click="sortStartPublishDateAsc()">公開開始　昇順</a>
-              <a class="dropdown-item" @click="sortStartPublishDateDesc()">公開開始　降順</a>
-              <a class="dropdown-item" @click="sortEndPublishDateAsc()">終了開始　昇順</a>
-              <a class="dropdown-item" @click="sortEndPublishDateDesc()">終了開始　降順</a>
+          <div class="control-data">
+            <div class="dropdown is-hoverable is-right sort-button-area">
+              <div class="dropdown-trigger">
+                <button class="button sort-button" aria-haspopup="true" aria-controls="dropdown-menu">
+                  <span>表示順</span>
+                  <span class="icon is-small">
+                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                  </span>
+                </button>
+              </div>
+              <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                <div class="dropdown-content">
+                  <a class="dropdown-item" @click="sortNameAsc()">運航ルール名　昇順</a>
+                  <a class="dropdown-item" @click="sortNameDesc()">運航ルール名　降順</a>
+                  <a class="dropdown-item" @click="sortStartPublishDateAsc()">公開開始　昇順</a>
+                  <a class="dropdown-item" @click="sortStartPublishDateDesc()">公開開始　降順</a>
+                  <a class="dropdown-item" @click="sortEndPublishDateAsc()">終了開始　昇順</a>
+                  <a class="dropdown-item" @click="sortEndPublishDateDesc()">終了開始　降順</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="control">
+              <input class="input is-rounded" type="text" placeholder="運航ルール名を検索" v-model="searchQuery" @input="filterList">
             </div>
           </div>
+
         </div>
+
+
       </div>
       <!-- table header -->
       <div class="columns index-table">
@@ -44,7 +55,7 @@
         <div class="column is-1">アクション</div>
       </div>
       <!-- table data -->
-      <div class="columns index-table-data" v-for="item in this.timeScheduleList" :key="item.id">
+      <div class="columns index-table-data" v-for="item in this.filteredTimeScheduleList" :key="item.id">
         <div class="column is-1"><input type="checkbox" /></div>
         <div class="column is-1">
           <div class="noPublish" v-if="item.publish_status_id === 0">非公開</div>
@@ -81,7 +92,9 @@ export default {
   data() {
     return {
       title: '',
-      timeScheduleList: []
+      timeScheduleList: [],
+      searchQuery: '',
+      filteredTimeScheduleList: []
     }
   },
   created() {
@@ -103,6 +116,7 @@ export default {
         console.log('APIレスポンス:', response.data)
         this.timeScheduleList = response.data.schedules
         this.title = response.data.operation_rule_name
+        this.filteredTimeScheduleList = this.timeScheduleList
       } catch (error) {
         console.error('APIエラー:', error.response ? error.response.data : error.message)
       }
@@ -134,25 +148,33 @@ export default {
       }
     },
     sortNameAsc() {
-      this.timeScheduleList.sort((a, b) => a.time_schedule_name.localeCompare(b.time_schedule_name))
+      this.filteredTimeScheduleList.sort((a, b) => a.time_schedule_name.localeCompare(b.time_schedule_name))
     },
     sortNameDesc() {
-      this.timeScheduleList.sort((a, b) => b.time_schedule_name.localeCompare(a.time_schedule_name))
+      this.filteredTimeScheduleList.sort((a, b) => b.time_schedule_name.localeCompare(a.time_schedule_name))
     },
     sortStartPublishDateAsc() {
-      console.log(this.timeScheduleList[0].publish_end_date)
-      this.timeScheduleList.sort((a, b) => new Date(a.publish_start_date) - new Date(b.publish_start_date));
+      this.filteredTimeScheduleList.sort((a, b) => new Date(a.publish_start_date) - new Date(b.publish_start_date));
     },
     sortStartPublishDateDesc() {
-      this.timeScheduleList.sort((a, b) => new Date(b.publish_start_date) - new Date(a.publish_start_date));
+      this.filteredTimeScheduleList.sort((a, b) => new Date(b.publish_start_date) - new Date(a.publish_start_date));
     },
     sortEndPublishDateAsc() {
-      console.log(this.timeScheduleList[0].publish_end_date)
-      this.timeScheduleList.sort((a, b) => new Date(a.publish_end_date) - new Date(b.publish_end_date));
+      this.filteredTimeScheduleList.sort((a, b) => new Date(a.publish_end_date) - new Date(b.publish_end_date));
     },
     sortEndPublishDateDesc() {
-      this.timeScheduleList.sort((a, b) => new Date(b.publish_end_date) - new Date(a.publish_end_date));
+      this.filteredTimeScheduleList.sort((a, b) => new Date(b.publish_end_date) - new Date(a.publish_end_date));
     },
+    filterList() {
+      if (this.searchQuery === '') {
+        // 検索クエリが空の場合、全件表示
+        this.filteredTimeScheduleList = this.timeScheduleList;
+      } else {
+        this.filteredTimeScheduleList = this.timeScheduleList.filter(item =>
+          item.time_schedule_name.toLowerCase().includes(this.searchQuery.toLowerCase())
+        );
+      }
+    }
   }
 }
 </script>
