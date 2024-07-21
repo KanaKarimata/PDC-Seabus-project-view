@@ -118,7 +118,7 @@ export default {
   created() {
     this.getTimeScheduleDetailList()
     this.getOperationRuleInfo(this.$route.params.operation_rule_id)
-    this.url = 'http://localhost:8080/operation-rule/signage/' + this.$route.params.operation_rule_id + '/time-schedule/' + this.$route.params.time_schedule_id
+    this.url = 'http://localhost:8081/signage/' + this.$route.params.operation_rule_id + '/time-schedule/' + this.$route.params.time_schedule_id
   },
   mounted() {
     document.title = '時刻表-登録内容確認 | シーバス'
