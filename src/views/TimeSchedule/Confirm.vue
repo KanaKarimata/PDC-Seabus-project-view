@@ -58,11 +58,13 @@
               </tr>
               <tr>
                 <th>終日運休ボタンチェック</th>
-                <td>チェックを入れるとサイネージが終日運休画面に変わります</td>
+                <!-- <td>チェックを入れるとサイネージが終日運休画面に変わります</td> -->
+                <td>{{ this.getOutOfServiceComment(this.time_schedule.out_of_service_flg) }}</td>
               </tr>
               <tr>
                 <th>土日運航ボタンチェック</th>
-                <td>チェックを入れると土日のみ表示されます</td>
+                <!-- <td>チェックを入れると土日のみ表示されます</td> -->
+                <td>{{ this.getPublishHolidayComment(this.time_schedule.publish_holiday_flg) }}</td>
               </tr>
               <tr>
                 <th></th>
@@ -158,6 +160,12 @@ export default {
             duration: 2000,
             position: 'bottom-right',
           });
+    },
+    getOutOfServiceComment(flg) {
+      return flg ? 'チェック有' : 'チェック無（チェックを入れるとサイネージが終日運休画面に変わります）'
+    },
+    getPublishHolidayComment(flg) {
+      return flg ? 'チェック有' : 'チェック無（チェックを入れると土日のみ表示されます）'
     }
   }
 }
