@@ -50,7 +50,7 @@ export default {
     }
   },
   mounted() {
-    document.title = 'Log in | TimetableManagement'
+    document.title = 'Log in | シーバス'
   },
   methods: {
     ...mapActions(['login']),

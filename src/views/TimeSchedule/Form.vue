@@ -2,7 +2,7 @@
   <link rel="stylesheet" href="/css/form.css" type="text/css">
   <div class="page-form">
     <div class="columns">
-      <div class="column is-10 is-offset-1">
+      <div class="column is-8 is-offset-2">
 
         <h1 class="title">
           {{ this.getOperationRuleName }}
@@ -17,8 +17,8 @@
             :to="{
             name: 'TimeScheduleIndex',
             params: {operation_rule_id: this.operation_rule_id}}"
-            class="button back-button"
-          ><i class="fa-solid fa-backward"></i>&ensp;一覧へ戻る</router-link>
+            class="button back-button pushright"
+          ><span><i class="fa-solid fa-backward"></i>&ensp;一覧へ戻る</span></router-link>
 
           <router-link
               v-else
@@ -32,9 +32,9 @@
         </div>
 
         <form class="create-update-form-area" @submit.prevent="submitForm" style="font-size: 14px;">
-          <div class="card" style="height: 10400px;">
-            <div class="card-content" style="height: 10400px;">
-              <div style="height: 10050px;">
+          <div class="card" style="height: 12300px;">
+            <div class="card-content" style="height: 12300px;">
+              <div style="height: 11900px;">
                 <div class="field">
                   <label>運行ルール名</label>
                   <div class="control">
@@ -55,15 +55,16 @@
 
                 <div class="field">
                   <label>終日運休ボタン</label>
-                  <div class="box column is-3">
-                    <label class="checkbox">
-                      <input type="checkbox" v-model="out_of_service_flg">
-                        終日運休
-                    </label>
+                  <div class="checkbox non-operate-allday">
+                    <div class="block">
+                      <span>終日運休</span>
+                      <input data-index="0" id="cheap" type="checkbox" v-model="out_of_service_flg" />
+                      <label for="cheap"></label>
+                    </div>
                   </div>
                 </div>
 
-                <hr>
+                <div class="hr"></div>
 
                 <ScheduleDetailForm
                   :details="time_schedule_detail"
@@ -71,16 +72,25 @@
                   :operation_status_detail="operation_status_detail"
                   @updateDetails="handleUpdateDetails"/>
               </div>
-
+              <hr>
               <div class="field">
                 <label>土日運航ボタン</label>
-                <div class="box column is-3">
+                <div class="checkbox non-operate-allday">
+                  <div class="block">
+                    <span>土日運航</span>
+                    <input data-index="0" id="cheap" type="checkbox" v-model="out_of_service_flg" />
+                    <label for="cheap"></label>
+                  </div>
+                </div>
+                <!-- <div class="box column is-3">
                   <label class="checkbox">
                     <input type="checkbox" v-model="publish_holiday_flg">
                       土日運航
                   </label>
-                </div>
+                </div> -->
               </div>
+
+              <div class="hr"></div>
 
               <div class="field">
                 <label>公開日時</label>
@@ -105,17 +115,21 @@
                   </div>
               </div>
 
-              <div class="field">
-                <div class="control">
-                  <button class="button" @click="registerOnly">下書き</button>
+              <div class="register-buttons">
+                <div class="field">
+                  <div class="control">
+                    <button class="button is-rounded non-publish-button" @click="registerOnly">下書き</button>
+                  </div>
+                </div>
+  
+                <div class="field">
+                  <div class="control">
+                    <button class="button is-rounded publish-button" @click="registerAndPublish">公開</button>
+                  </div>
                 </div>
               </div>
 
-              <div class="field">
-                <div class="control">
-                  <button class="button" @click="registerAndPublish">公開</button>
-                </div>
-              </div>
+
             </div>
           </div>
 
@@ -170,7 +184,6 @@
     },
     created() {
       this.operation_rule = this.$route.params.operation_rule_id
-      console.log(this.$route.params.type)
       if (this.$route.params.type) {
         if (this.$route.params.type === 'update') {
           this.time_schedule_id = this.$route.params.time_schedule_id
@@ -184,6 +197,18 @@
           this.getTimeScheduleData()
         } else {
           this.getMasterData()
+        }
+      }
+    },
+    mounted() {
+      document.title = '時刻表-作成 | シーバス'
+      if (this.$route.params.type) {
+        if (this.$route.params.type === 'update') {
+          document.title = '時刻表-編集 | シーバス'
+        } else if (this.$route.params.type === 'copy') {
+          document.title = '時刻表-複製 | シーバス'
+        } else {
+          document.title = '時刻表-作成 | シーバス'
         }
       }
     },
@@ -205,7 +230,6 @@
           this.operation_status = response.data.operation_status
           this.operation_status_detail = response.data.operation_status_detail
           this.destination = response.data.destination
-          console.log('destination' + this.destination)
           this.getOperationRuleInfo(this.operation_rule)
         } catch (error) {
           console.error('APIエラー:', error.response ? error.response.data : error.message)
@@ -262,12 +286,16 @@
           item.detail_comment !== null ||
           item.memo !== null
         )
+        console.log('executeAction')
+        console.log(timeScheduleRequestData)
 
         timeScheduleRequestData.forEach(item => {
           delete item.key_id
         })
 
         if (this.updateFlg) {
+          console.log('update')
+          console.log(timeScheduleRequestData)
           this.update(timeScheduleRequestData)
         } else {
           this.create(timeScheduleRequestData)
@@ -309,13 +337,16 @@
         }
       },
       async update(timeScheduleRequestData) {
+        console.log('timeScheduleRequestData')
         console.log(timeScheduleRequestData)
         try {
           const timeScheduleId = this.time_schedule_id;
           const response = await axiosInstance.put(`http://localhost:8000/operation-rule/time-schedule-update/${timeScheduleId}/`, {
             operation_rule: this.operation_rule,
             time_schedule_name: this.time_schedule_name,
+            destination: this.destination_id,
             out_of_service_flg: this.out_of_service_flg,
+            publish_holiday_flg: this.publish_holiday_flg,
             time_schedule_detail: timeScheduleRequestData,
             publish_status_id: this.publish_status_id,
             publish_start_date: this.publish_start_date,

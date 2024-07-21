@@ -2,6 +2,14 @@
   color: #0D0D0D;
   border: 1px solid #0D0D0D;
   box-shadow: 4px 4px #0D0D0D;
+  transition: all 0.3s ease;
+}
+.back-button:hover {
+  color: #fff;
+  border: 1px solid #0D0D0D;
+  background: #0D0D0D;
+  box-shadow: 4px 4px #fff;
+  transform: translate(4px, 4px);
 }
 .back-button-area {
   margin-top: 3rem;
@@ -11,4 +19,117 @@
 }
 .card {
   border: 1px solid #0D0D0D;
+}
+.card-content {
+  padding: 2rem;
+}
+.field > label {
+  font-weight: bold;
+  color: #363636;
+}
+.register-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+.register-buttons > .field {
+  margin: 0 2rem;
+}
+.register-buttons > .field > .control > .button{
+  width: 10rem;
+}
+.publish-button {
+  background: #FD8100;
+  border: 1px solid #FD8100;
+  font-weight: bold;
+  color: #fff;
+}
+.publish-button:hover {
+  background: #FFE099;
+  border: 1px solid #FFE099;
+  color: #fff;
+}
+.non-publish-button {
+  background: #949599;
+  border: 1px solid #949599;
+  font-weight: bold;
+  color: #fff;
+}
+.non-publish-button:hover {
+  background: #c6c7cc;
+  border: 1px solid #c6c7cc;
+  font-weight: bold;
+  color: #fff;
+}
+.field > .control > input {
+  /* background: #f0f8ff; */
+  /* border: 1px solid #f0f8ff; */
+}
+.time-picker {
+  z-index: 100;
+}
+.non-operate-allday {
+  display: block;
+  margin-top: 0.5rem;
+}
+.select:not(.is-multiple):not(.is-loading)::after {
+  z-index: 0;
+}
+.checkbox > .block > input {
+  display:none;  
+}
+.checkbox > .block{
+  width:150px;
+  position:relative;
+  clear:both;
+  float: left;
+}
+.checkbox > .block > span{
+  text-transform:uppercase;
+  font-weight:bold;
+  letter-spacing:1px;
+  font-size:15px;
+  float:right;
+  width:80px;
+  margin:5px 0 0;
+}
+.checkbox > .block > label{
+  width:60px;
+  height:30px;
+  box-sizing:border-box;
+  border:3px solid #ccc;
+  background:#ccc;
+  float:left;
+  border-radius:100px;
+  position:relative;
+  cursor:pointer;
+  transition:.3s ease;
+}
+input[type=checkbox]:checked + label{
+  background:#0459C8;
+  border-color:#0459C8;
+}
+input[type=checkbox]:checked + label:before{
+  left:30px;
+}
+.checkbox > .block > label:before{
+  transition:.3s ease;
+  content:'';
+  width:20px;
+  height:20px;
+  position:absolute;
+  background:white;
+  left:2px;
+  top:2px;
+  box-sizing:border-box;
+  border:none;
+  color:black;
+  border-radius:100px;
+}
+.hr {
+  background-color: #fff;
+  border: none;
+  display: block;
+  height: 2px;
+  margin: 1.5rem 0;
 }

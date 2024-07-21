@@ -66,6 +66,9 @@ export default {
   created() {
     this.getTimeScheduleList()
   },
+  mounted() {
+    document.title = '時刻表一覧 | シーバス'
+  },
   watch: {
     '$route.params.operation_rule_id': 'getTimeScheduleList'
   },

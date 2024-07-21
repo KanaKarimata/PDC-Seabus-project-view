@@ -5,6 +5,7 @@
       key-field="key_id"
       v-slot="{ item, index }"
     >
+    <hr>
       <div :key="item.key_id">
         <div class="field">
           <label>No.{{ index + 1 }} [時間]</label>
@@ -12,10 +13,11 @@
             <DatetimePicker
               :id="`time-picker-${index}`"
               v-model="item.departure_time"
-              format="hh:mm"
-              formatted="hh:mm"
+              format="HH:mm"
+              formatted="HH:mm"
               label="Select time"
               color="#48c78e"
+              class="time-picker"
               only-time
               @change="emitUpdateDetails"
             />
@@ -24,7 +26,7 @@
 
         <div class="field">
           <label>No.{{ index + 1 }} [運行状況]</label>
-          <div class="control">
+          <div class="control column is-4">
             <div class="select is-rounded">
               <select v-model="item.operation_status_id" @change="setOperationStatusDetail(item)">
                 <option v-for="status in this.operation_status" :value="status.id">{{ status.operations_status_type }}</option>
@@ -48,7 +50,7 @@
 
         <div class="field">
           <label>No.{{ index + 1 }} [詳細]</label>
-          <div class="control">
+          <div class="control column is-4">
             <div class="select is-rounded">
               <select v-model="item.operation_status_detail_id">
                 <option v-for="detail in this.operation_status_detail" :value="detail.id">{{ detail.operation_status_detail }}</option>
@@ -72,21 +74,20 @@
 
         <div class="field">
           <label>No.{{ index + 1 }} [詳細コメント]</label>
-          <span>※[詳細]が「表示しない」選択時、入力があれば表示する（推奨文字数20文字）</span>
-          <div class="control">
+          <span>&ensp;<i class="fa-solid fa-exclamation"></i>&ensp;[詳細]で「表示しない」を選択した場合、入力があれば表示する（推奨文字数20文字）</span>
+          <div class="control column is-7">
             <input type="text" class="input" v-model="item.detail_comment" @change="emitUpdateDetails">
           </div>
         </div>
 
         <div class="field">
           <label>No.{{ index + 1 }} [備考]</label>
-          <div class="control">
+          <div class="control column is-7">
             <input type="text" class="input" v-model="item.memo" @change="emitUpdateDetails">
           </div>
         </div>
 
       </div>
-      <hr>
   </RecycleScroller>
 </template>
 
@@ -140,6 +141,7 @@ export default {
       this.emitUpdateDetails()
     },
     emitUpdateDetails() {
+      console.log(this.expandedDetails)
       this.$emit('updateDetails', this.expandedDetails)
     },
     setOperationStatusDetail(item) {
@@ -148,6 +150,7 @@ export default {
       } else {
         item.operation_status_detail_id = 0
       }
+      this.emitUpdateDetails()
     },
     chunkArray(array, size) {
       const chunkedArray = [];

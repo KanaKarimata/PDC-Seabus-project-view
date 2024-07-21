@@ -32,7 +32,7 @@
 }
 .publish {
   background: #FD8100;
-  color: #0D0D0D;
+  color: #fff;
   font-weight: bold;
   text-align: center;
   border-radius: 30px;
@@ -44,4 +44,12 @@
   color: #0D0D0D;
   border: 1px solid #0D0D0D;
   box-shadow: 4px 4px #0D0D0D;
+  transition: all 0.3s ease;
+}
+.create-button:hover {
+  color: #fff;
+  border: 1px solid #0D0D0D;
+  background: #0D0D0D;
+  box-shadow: 4px 4px #fff;
+  transform: translate(4px, 4px);
 }

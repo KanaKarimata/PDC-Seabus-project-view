@@ -110,6 +110,9 @@ export default {
     this.getTimeScheduleDetailList()
     this.getOperationRuleInfo(this.$route.params.operation_rule_id)
   },
+  mounted() {
+    document.title = '時刻表-登録内容確認 | シーバス'
+  },
   computed: {
     ...mapGetters(['getOperationRuleName'])
   },

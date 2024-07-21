@@ -50,10 +50,14 @@ body,
 .tab-button {
   background: #fff;
   border-radius: 30px;
-  border: 1px solid #FFE099;
+  border: 2px solid #FFE099;
   color: #0D0D0D;
   font-weight: bold;
   font-size: 0.8rem;
+}
+.tab-button:hover {
+  background: #ffb300;
+  border: 2px solid #ffb300;
 }
 .navbar-item-not-authenticated {
   color: #fff;

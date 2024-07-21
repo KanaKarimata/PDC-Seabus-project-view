@@ -34,8 +34,8 @@
     computed: {
       ...mapGetters(['getEditPermission', 'getUserPermission', 'getOperationRuleList'])
     },
-    created() {
-      // this.getOperationRuleListData()
+    mounted() {
+      document.title = 'Top | シーバス'
     },
     methods: {
       // ...mapActions(['commitOperationRuleList', 'commitUserPermission']),
