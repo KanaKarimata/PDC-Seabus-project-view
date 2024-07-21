@@ -1,7 +1,7 @@
 <template>
   <link rel="stylesheet" href="/css/confirm.css" type="text/css">
   <div class="columns">
-    <div class="column">
+    <div class="column is-8 is-offset-2">
       <h1 class="title">{{ this.getOperationRuleName }}</h1>
       <div class="button-area">
         <div class="back-button-area">
@@ -40,17 +40,52 @@
 
       <div class="card main-contents">
         <div class="card-content">
-          <div class="table detail-index-table">
-            <tr>
-              <td>運航ルール名</td>
-              <td>{{ this.time_schedule_name }}</td>
-            </tr>
-            <tr>
-              <td>終日運休ボタンチェック</td>
-              <td>チェックを入れるとサイネージが終日運休画面に変わります</td>
-            </tr>
-          </div>
-          <div class="table" v-for="(item, index) in this.timeScheduleDetailList" :key="item.id">
+          <table class="table detail-index-table">
+            <tbody class="table">
+              <tr>
+                <th>運航ルール名</th>
+                <td>{{ this.time_schedule_name }}</td>
+              </tr>
+              <tr>
+                <th>終日運休ボタンチェック</th>
+                <td>チェックを入れるとサイネージが終日運休画面に変わります</td>
+              </tr>
+              <tr>
+                <th>土日運航ボタンチェック</th>
+                <td>チェックを入れると土日のみ表示されます</td>
+              </tr>
+              <tr>
+                <th></th>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>時間</th>
+                <th>運航状況</th>
+                <th>詳細</th>
+                <th>詳細コメント</th>
+                <th>備考</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(item, index) in this.timeScheduleDetailList" :key="item.id">
+                <td>{{ index + 1 }}</td>
+                <td>{{ formatDate(item.departure_time) }}</td>
+                <td>{{ item.operation_status_info ? item.operation_status_info.operations_status_type : '' }}</td>
+                <td>{{ item.operation_status_detail_info ? item.operation_status_detail_info.operation_status_detail : '' }}</td>
+                <td>{{ item.detail_comment }}</td>
+                <td>{{ item.memo }}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- <div class="table" v-for="(item, index) in this.timeScheduleDetailList" :key="item.id">
+            
             <tr>
               <td>No.{{ index + 1 }} [時間]</td>
               <td>{{ formatDate(item.departure_time) }}</td>
@@ -72,7 +107,7 @@
               <td>{{ item.memo }}</td>
             </tr>
 
-            <!-- <div>
+            <div>
               <div>No.{{ index + 1 }} [運航状況]</div>
               <div>No.{{ index + 1 }} [詳細]</div>
               <div>No.{{ index + 1 }} [詳細コメント]</div>
@@ -86,7 +121,7 @@
               <div>{{ setViewData(item.detail_comment) }}</div>
               <div>{{ setViewData(item.memo) }}</div>
             </div> -->
-          </div>
+          <!-- </div> -->
         </div>
       </div>
     </div>
