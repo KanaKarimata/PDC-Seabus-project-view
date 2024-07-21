@@ -69,3 +69,14 @@ a {
 .onPage {
   background: #FFE099;
 }
+.log-out-button {
+  background: #161B37;
+  border: 1px solid #6D7AC5;
+  color: #fff;
+  font-weight: bold;
+}
+.log-out-button:hover {
+  border: 1px solid #fff;
+  color: #fff;
+  font-weight: bold;
+}

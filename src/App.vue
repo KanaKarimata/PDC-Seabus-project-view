@@ -25,7 +25,7 @@
         <div class="navbar-end">
           <div class="navbar-item">
             <div class="buttons">
-              <button class="button is-light" @click="this.executeLogout()">Log out</button>
+              <button class="button log-out-button" @click="this.executeLogout()">Log out&ensp;<i class="fa-solid fa-arrow-right-from-bracket"></i></button>
             </div>
           </div>
         </div>
