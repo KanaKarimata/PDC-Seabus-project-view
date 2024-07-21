@@ -36,14 +36,14 @@
             <div class="card-content" style="height: 12300px;">
               <div style="height: 11900px;">
                 <div class="field">
-                  <label>運行ルール名</label>
+                  <label>運行ルール名<span class="alert">&ensp;※必須</span></label>
                   <div class="control">
                     <input type="text" class="input" v-model="time_schedule_name">
                   </div>
                 </div>
 
                 <div class="field">
-                  <label>行き先</label>
+                  <label>行き先<span class="alert">&ensp;※必須</span></label>
                   <div class="control">
                     <div class="select is-rounded">
                       <select v-model="destination_id">
@@ -93,7 +93,7 @@
               <div class="hr"></div>
 
               <div class="field">
-                <label>公開日時</label>
+                <label>公開日時<span class="alert">&ensp;※必須</span></label>
                   <div style="display: flex; justify-content: center;" class="control column is-10">
                     <DatetimePicker
                       v-model="publish_start_date"
@@ -279,6 +279,19 @@
         this.executeAction()
       },
       executeAction() {
+        if (!this.time_schedule_name) {
+          alert('運航ルール名は必須です')
+          return
+        }
+        if (this.destination_id !== 0) {
+          alert('行き先は必須です')
+          return
+        }
+        if(!this.publish_start_date || !this.publish_end_date) {
+          alert('公開日時は必須です')
+          return
+        }
+
         let timeScheduleRequestData = this.time_schedule_detail.filter(item =>
           item.departure_time !== null ||
           item.operation_status_id !== 0 ||

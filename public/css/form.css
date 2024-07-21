@@ -133,3 +133,7 @@ input[type=checkbox]:checked + label:before{
   height: 2px;
   margin: 1.5rem 0;
 }
+.alert {
+  color: #EF8800;
+  font-weight: bold;
+}
