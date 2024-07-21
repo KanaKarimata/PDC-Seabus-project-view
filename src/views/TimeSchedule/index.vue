@@ -11,6 +11,27 @@
             type: 'create'
           }}"
         class="button create-button"><i class="fa-solid fa-feather"></i>&ensp;新規作成</router-link>
+
+        <div class="dropdown is-hoverable is-right sort-button-area">
+          <div class="dropdown-trigger">
+            <button class="button sort-button" aria-haspopup="true" aria-controls="dropdown-menu">
+              <span>表示順</span>
+              <span class="icon is-small">
+                <i class="fas fa-angle-down" aria-hidden="true"></i>
+              </span>
+            </button>
+          </div>
+          <div class="dropdown-menu" id="dropdown-menu" role="menu">
+            <div class="dropdown-content">
+              <a class="dropdown-item" @click="sortNameAsc()">運航ルール名　昇順</a>
+              <a class="dropdown-item" @click="sortNameDesc()">運航ルール名　降順</a>
+              <a class="dropdown-item" @click="sortStartPublishDateAsc()">公開開始　昇順</a>
+              <a class="dropdown-item" @click="sortStartPublishDateDesc()">公開開始　降順</a>
+              <a class="dropdown-item" @click="sortEndPublishDateAsc()">終了開始　昇順</a>
+              <a class="dropdown-item" @click="sortEndPublishDateDesc()">終了開始　降順</a>
+            </div>
+          </div>
+        </div>
       </div>
       <!-- table header -->
       <div class="columns index-table">
@@ -111,7 +132,27 @@ export default {
       } catch (error) {
         console.error('APIエラー:', error.response ? error.response.data : error.message)
       }
-    }
+    },
+    sortNameAsc() {
+      this.timeScheduleList.sort((a, b) => a.time_schedule_name.localeCompare(b.time_schedule_name))
+    },
+    sortNameDesc() {
+      this.timeScheduleList.sort((a, b) => b.time_schedule_name.localeCompare(a.time_schedule_name))
+    },
+    sortStartPublishDateAsc() {
+      console.log(this.timeScheduleList[0].publish_end_date)
+      this.timeScheduleList.sort((a, b) => new Date(a.publish_start_date) - new Date(b.publish_start_date));
+    },
+    sortStartPublishDateDesc() {
+      this.timeScheduleList.sort((a, b) => new Date(b.publish_start_date) - new Date(a.publish_start_date));
+    },
+    sortEndPublishDateAsc() {
+      console.log(this.timeScheduleList[0].publish_end_date)
+      this.timeScheduleList.sort((a, b) => new Date(a.publish_end_date) - new Date(b.publish_end_date));
+    },
+    sortEndPublishDateDesc() {
+      this.timeScheduleList.sort((a, b) => new Date(b.publish_end_date) - new Date(a.publish_end_date));
+    },
   }
 }
 </script>

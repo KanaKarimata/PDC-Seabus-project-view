@@ -53,3 +53,19 @@
   box-shadow: 4px 4px #fff;
   transform: translate(4px, 4px);
 }
+.sort-button-area {
+  float: right;
+}
+.sort-button {
+  color: #F18900;
+  font-weight: bold;
+  border: 2px solid #F18900;
+  border-radius: 30px;
+}
+.sort-button:hover {
+  color: #fff;
+  font-weight: bold;
+  background: #F18900;
+  border: 2px solid #F18900;
+  border-radius: 30px;
+}
