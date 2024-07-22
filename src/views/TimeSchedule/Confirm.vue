@@ -42,7 +42,7 @@
         <div class="card-content">
           <div>
             サイネージ時刻表URL
-            <span class="caution" v-if="this.checkPublishDate()">&ensp;公開日前です。アクセスするとエラー画面が表示されます。</span>
+            <span class="caution" v-if="this.checkPublishDate()">&ensp;公開日前です。</span>
           </div>
           <div style="display: flex;">
             <input id="urlbox" class="input" type="text" :value="this.url">
