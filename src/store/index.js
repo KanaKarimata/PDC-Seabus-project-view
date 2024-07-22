@@ -12,6 +12,11 @@ export default createStore({
       RED_BRICK: 2,
       YAMASHITA_PARK: 3
     },
+    operationRuleIdList: {
+      YOKOHAMA_STATION: 1,
+      RED_BRICK: 2,
+      YAMASHITA_PARK: 3
+    },
     userPermission: [],
     operationRuleList: [],
     operationRuleName: null
@@ -20,7 +25,8 @@ export default createStore({
     getEditPermission: state => state.editPermissionEnum,
     getUserPermission: state => state.userPermission,
     getOperationRuleList: state => state.operationRuleList,
-    getOperationRuleName: state => state.operationRuleName
+    getOperationRuleName: state => state.operationRuleName,
+    getOperationRuleIdList: state => state.operationRuleIdList
   },
   mutations: {
     setAuthenticate(state) {

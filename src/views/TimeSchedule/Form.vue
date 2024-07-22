@@ -283,7 +283,7 @@
           alert('運航ルール名は必須です')
           return
         }
-        if (this.destination_id !== 0) {
+        if (this.destination_id === 0) {
           alert('行き先は必須です')
           return
         }
