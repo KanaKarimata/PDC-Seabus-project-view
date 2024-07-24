@@ -8,9 +8,9 @@ export default createStore({
     refreshToken: localStorage.getItem('refreshToken') || '',
     editPermissionEnum: {
       MASTER: 6,
-      YOKOHAMA_STATION: 1,
-      RED_BRICK: 2,
-      YAMASHITA_PARK: 3
+      YOKOHAMA_STATION: 2,
+      RED_BRICK: 3,
+      YAMASHITA_PARK: 4
     },
     operationRuleIdList: {
       YOKOHAMA_STATION: 1,

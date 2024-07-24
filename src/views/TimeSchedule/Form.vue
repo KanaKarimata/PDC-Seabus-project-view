@@ -102,6 +102,7 @@
                       :only-time="false"
                       label="Select date & time"
                       color="#48c78e"
+                      :key="'start_' + Date.now()"
                     />
                     <div style="margin: 0 16px; padding-top: 8px;">〜</div>
                     <DatetimePicker
@@ -111,6 +112,7 @@
                       :only-time="false"
                       label="Select date & time"
                       color="#48c78e"
+                      :key="'end_' + Date.now()"
                     />
                   </div>
               </div>
