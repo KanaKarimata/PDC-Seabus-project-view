@@ -78,8 +78,8 @@
                 <div class="checkbox non-operate-allday">
                   <div class="block">
                     <span>土日運航</span>
-                    <input data-index="0" id="cheap" type="checkbox" v-model="out_of_service_flg" />
-                    <label for="cheap"></label>
+                    <input data-index="1" id="cheap2" type="checkbox" v-model="publish_holiday_flg" />
+                    <label for="cheap2"></label>
                   </div>
                 </div>
                 <!-- <div class="box column is-3">
@@ -102,7 +102,7 @@
                       :only-time="false"
                       label="Select date & time"
                       color="#48c78e"
-                      :key="'start_' + Date.now()"
+                      :key="start_date_time"
                     />
                     <div style="margin: 0 16px; padding-top: 8px;">〜</div>
                     <DatetimePicker
@@ -112,7 +112,7 @@
                       :only-time="false"
                       label="Select date & time"
                       color="#48c78e"
-                      :key="'end_' + Date.now()"
+                      :key="end_date_time"
                     />
                   </div>
               </div>
@@ -306,6 +306,7 @@
 
         timeScheduleRequestData.forEach(item => {
           delete item.key_id
+          delete item.requiredFlg
         })
 
         if (this.updateFlg) {
