@@ -179,6 +179,9 @@ export default {
       const now = new Date();
       const publishStartDate = new Date(this.time_schedule.publish_start_date)
 
+      console.log(now)
+      console.log(publishStartDate)
+
       return now < publishStartDate
     },
     getUrl() {

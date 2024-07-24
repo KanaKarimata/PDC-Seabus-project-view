@@ -169,7 +169,8 @@
           operation_status_id: 0,
           operation_status_detail_id: 0,
           detail_comment: null,
-          memo: null
+          memo: null,
+          requiredFlg: false
         })),
         publish_status_id: 0,
         publish_start_date: null,
@@ -262,7 +263,8 @@
             operation_status_id: item.operation_status_id,
             operation_status_detail_id: item.operation_status_detail_id,
             detail_comment: item.detail_comment,
-            memo: item.memo
+            memo: item.memo,
+            requiredFlg: false
           }));
           this.time_schedule_detail = formattedData
 

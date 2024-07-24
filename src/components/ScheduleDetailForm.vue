@@ -19,12 +19,13 @@
               color="#48c78e"
               class="time-picker"
               only-time
+              @update:model-value="setRequiredFlg(item)"
             />
           </div>
         </div>
 
         <div class="field">
-          <label>No.{{ index + 1 }} [運行状況]</label>
+          <label>No.{{ index + 1 }} [運行状況]<span class="alert" v-if="item.requiredFlg">&ensp;※必須</span></label>
           <div class="control column is-4">
             <div class="select is-rounded">
               <select v-model="item.operation_status_id" @change="setOperationStatusDetail(item)">
@@ -48,7 +49,7 @@
         </div>
 
         <div class="field">
-          <label>No.{{ index + 1 }} [詳細]</label>
+          <label>No.{{ index + 1 }} [詳細]<span class="alert" v-if="item.requiredFlg">&ensp;※必須</span></label>
           <div class="control column is-4">
             <div class="select is-rounded">
               <select v-model="item.operation_status_detail_id">
@@ -73,7 +74,7 @@
 
         <div class="field">
           <label>No.{{ index + 1 }} [詳細コメント]</label>
-          <span>&ensp;<i class="fa-solid fa-exclamation"></i>&ensp;[詳細]で「表示しない」を選択した場合、入力があれば表示する（推奨文字数20文字）</span>
+          <span>&ensp;※[詳細]で「表示しない」を選択した場合、入力があれば表示する（推奨最大文字数20文字）</span>
           <div class="control column is-7">
             <input type="text" class="input" v-model="item.detail_comment" @change="emitUpdateDetails">
           </div>
@@ -100,6 +101,11 @@ export default {
     RecycleScroller,
     DatetimePicker
   },
+  data() {
+    return {
+      // requiredFlg: false
+    }
+  },
   props: {
     details: {
       type: Array,
@@ -123,7 +129,8 @@ export default {
         operation_status_id: 0,
         operation_status_detail_id: 0,
         detail_comment: null,
-        memo: null
+        memo: null,
+        requiredFlg: false
       }));
       return [...this.details, ...emptyDetails];
     },
@@ -140,6 +147,7 @@ export default {
       this.emitUpdateDetails()
     },
     emitUpdateDetails() {
+      console.log('emitUpdateDetails')
       this.$emit('updateDetails', this.expandedDetails)
     },
     setOperationStatusDetail(item) {
@@ -156,6 +164,11 @@ export default {
         chunkedArray.push(array.slice(i, i + size));
       }
       return chunkedArray;
+    },
+    setRequiredFlg(item) {
+      console.log(item.requiredFlg)
+      item.requiredFlg = true
+      this.emitUpdateDetails()
     }
   }
 }
