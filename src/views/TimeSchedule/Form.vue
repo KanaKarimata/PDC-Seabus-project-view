@@ -301,23 +301,18 @@
           item.detail_comment !== null ||
           item.memo !== null
         )
-        console.log('executeAction')
-        console.log(timeScheduleRequestData)
 
         timeScheduleRequestData.forEach(item => {
           delete item.key_id
         })
 
         if (this.updateFlg) {
-          console.log('update')
-          console.log(timeScheduleRequestData)
           this.update(timeScheduleRequestData)
         } else {
           this.create(timeScheduleRequestData)
         }
       },
       async create(timeScheduleRequestData) {
-        console.log(timeScheduleRequestData)
         let formData = timeScheduleRequestData.map(item => ({
           ...item,
           id: item.id !== null ? null : item.id
@@ -335,8 +330,7 @@
             publish_start_date: this.publish_start_date,
             publish_end_date: this.publish_end_date
           })
-          console.log('APIレスポンス:', response.data)
-          console.log('レスポンス:', response)
+
           if (response.status === 201) {
             let timeScheduleId = response.data.id;
             this.$router.push({
@@ -352,8 +346,6 @@
         }
       },
       async update(timeScheduleRequestData) {
-        console.log('timeScheduleRequestData')
-        console.log(timeScheduleRequestData)
         try {
           const timeScheduleId = this.time_schedule_id;
           const response = await axiosInstance.put(`http://localhost:8000/operation-rule/time-schedule-update/${timeScheduleId}/`, {
@@ -367,8 +359,7 @@
             publish_start_date: this.publish_start_date,
             publish_end_date: this.publish_end_date
           })
-          console.log('APIレスポンス:', response.data)
-          console.log('レスポンス:', response)
+
           if (response.status === 200) {
             this.$router.push({
               name: 'Confirm',

@@ -19,7 +19,6 @@
               color="#48c78e"
               class="time-picker"
               only-time
-              @change="emitUpdateDetails"
             />
           </div>
         </div>
@@ -87,7 +86,7 @@
           </div>
         </div>
 
-      </div>
+        </div>
   </RecycleScroller>
 </template>
 
@@ -141,7 +140,6 @@ export default {
       this.emitUpdateDetails()
     },
     emitUpdateDetails() {
-      console.log(this.expandedDetails)
       this.$emit('updateDetails', this.expandedDetails)
     },
     setOperationStatusDetail(item) {
@@ -157,7 +155,6 @@ export default {
       for (let i = 0; i < array.length; i += size) {
         chunkedArray.push(array.slice(i, i + size));
       }
-      console.log(chunkedArray)
       return chunkedArray;
     }
   }

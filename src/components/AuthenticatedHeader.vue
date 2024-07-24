@@ -32,11 +32,6 @@ import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'AuthenticatedHeader',
-  data() {
-    return {
-      // onPageFlg: null
-    }
-  },
   computed: {
     ...mapGetters(['getEditPermission', 'getUserPermission', 'getOperationRuleList'])
   },
@@ -47,7 +42,6 @@ export default {
     ...mapActions(['getOperationRuleListData']),
     isCurrentPage(id) {
       const currentId = this.$route.params.operation_rule_id;
-      console.log(currentId)
       return currentId == id;
     },
     setActivePage(id) {

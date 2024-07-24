@@ -143,7 +143,7 @@ export default {
           params: {
             time_schedule_id: this.$route.params.time_schedule_id
           }})
-        console.log('APIレスポンス:', response.data)
+
         this.timeScheduleDetailList = response.data.scheduleDetails
         this.time_schedule = response.data.time_schedule
         this.getUrl()
