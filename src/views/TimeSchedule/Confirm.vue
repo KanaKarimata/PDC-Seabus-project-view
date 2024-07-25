@@ -43,6 +43,7 @@
           <div>
             サイネージ時刻表URL
             <span class="caution" v-if="this.checkPublishDate()">&ensp;公開日前です。</span>
+            <span class="caution" v-else-if="this.checkPublishEndDate()">&ensp;公開終了日が過ぎています。</span>
           </div>
           <div style="display: flex;">
             <input id="urlbox" class="input" type="text" :value="this.url">
@@ -183,6 +184,15 @@ export default {
       console.log(publishStartDate)
 
       return now < publishStartDate
+    },
+    checkPublishEndDate() {
+      const now = new Date();
+      const publishEndDate = new Date(this.time_schedule.publish_end_date)
+
+      console.log(now)
+      console.log(publishEndDate)
+
+      return now > publishEndDate
     },
     getUrl() {
       if (this.$route.params.operation_rule_id == this.getOperationRuleIdList.YOKOHAMA_STATION
