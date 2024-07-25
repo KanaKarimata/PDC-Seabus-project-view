@@ -4,7 +4,7 @@ import router from './router';
 import { toast } from 'bulma-toast'
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8000/api', // Django REST FrameworkのAPIのベースURLを設定
+  baseURL: process.env.VUE_APP_API_URL + '/api', // Django REST FrameworkのAPIのベースURLを設定
   timeout: 1000,
 });
 

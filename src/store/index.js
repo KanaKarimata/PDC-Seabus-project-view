@@ -87,7 +87,7 @@ export default createStore({
     },
     async getOperationRuleListData({ commit }) {
       try {
-        const response = await axiosInstance.get('http://localhost:8000/operation-rule/index/')
+        const response = await axiosInstance.get(process.env.VUE_APP_API_URL + '/operation-rule/index/')
         commit('setOperationRuleList', response.data.operation_rules);
         commit('setUserPermission', response.data.user_permissions);
       } catch (error) {
@@ -96,7 +96,7 @@ export default createStore({
     },
     async getOperationRuleInfo({ commit }, operation_rule_id) {
       try {
-        const response = await axiosInstance.get(`http://localhost:8000/operation-rule/info/${operation_rule_id}/`)
+        const response = await axiosInstance.get(process.env.VUE_APP_API_URL + `/operation-rule/info/${operation_rule_id}/`)
         commit('setOperationRuleName', response.data.operation_rule_name);
       } catch (error) {
         console.error('APIエラー:', error.response ? error.response.data : error.message)

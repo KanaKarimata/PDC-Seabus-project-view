@@ -140,7 +140,7 @@ export default {
     ...mapActions(['getOperationRuleInfo']),
     async getTimeScheduleDetailList() {
       try {
-        const response = await axiosInstance.get('http://localhost:8000/operation-rule/time-schedule-detail/index/', {
+        const response = await axiosInstance.get(process.env.VUE_APP_API_URL + '/operation-rule/time-schedule-detail/index/', {
           params: {
             time_schedule_id: this.$route.params.time_schedule_id
           }})

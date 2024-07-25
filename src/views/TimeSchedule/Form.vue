@@ -229,7 +229,7 @@
       },
       async getMasterData() {
         try {
-          const response = await axiosInstance.get('http://localhost:8000/operation-rule/time-schedule/master/')
+          const response = await axiosInstance.get(process.env.VUE_APP_API_URL + '/operation-rule/time-schedule/master/')
           this.operation_status = response.data.operation_status
           this.operation_status_detail = response.data.operation_status_detail
           this.destination = response.data.destination
@@ -240,7 +240,7 @@
       },
       async getTimeScheduleData() {
         try {
-          const response = await axiosInstance.get('http://localhost:8000/operation-rule/time-schedule-detail/index/', {
+          const response = await axiosInstance.get(process.env.VUE_APP_API_URL + '/operation-rule/time-schedule-detail/index/', {
             params: {
               time_schedule_id: this.time_schedule_id
             }
@@ -322,7 +322,7 @@
         }))
 
         try {
-          const response = await axiosInstance.post('http://localhost:8000/operation-rule/time-schedule-create/', {
+          const response = await axiosInstance.post(process.env.VUE_APP_API_URL + '/operation-rule/time-schedule-create/', {
             operation_rule: this.operation_rule,
             time_schedule_name: this.time_schedule_name,
             destination: this.destination_id,
@@ -351,7 +351,7 @@
       async update(timeScheduleRequestData) {
         try {
           const timeScheduleId = this.time_schedule_id;
-          const response = await axiosInstance.put(`http://localhost:8000/operation-rule/time-schedule-update/${timeScheduleId}/`, {
+          const response = await axiosInstance.put(process.env.VUE_APP_API_URL + `/operation-rule/time-schedule-update/${timeScheduleId}/`, {
             operation_rule: this.operation_rule,
             time_schedule_name: this.time_schedule_name,
             destination: this.destination_id,

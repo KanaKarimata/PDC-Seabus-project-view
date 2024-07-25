@@ -109,7 +109,7 @@ export default {
   methods: {
     async getTimeScheduleList() {
       try {
-        const response = await axiosInstance.get('http://localhost:8000/operation-rule/time-schedule/index/', {
+        const response = await axiosInstance.get(process.env.VUE_APP_API_URL + '/operation-rule/time-schedule/index/', {
           params: {
             operation_rule_id: this.$route.params.operation_rule_id
           }})
@@ -132,7 +132,7 @@ export default {
     },
     async executeDelete(id) {
       try {
-        const response = await axiosInstance.delete(`http://localhost:8000/operation-rule/time-schedule/delete/${id}`)
+        const response = await axiosInstance.delete(process.env.VUE_APP_API_URL + `/operation-rule/time-schedule/delete/${id}`)
 
         toast({
           message: '削除しました',
