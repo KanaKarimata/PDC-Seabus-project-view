@@ -214,7 +214,7 @@ export default {
             && this.time_schedule.destination == this.getOperationRuleIdList.RED_BRICK) {
         this.urlBottom = '/from-yamashita-park/to-pier-red-brick'
       }
-      this.url = 'http://localhost:8081/signage/' + this.$route.params.operation_rule_id + '/time-schedule/' + this.$route.params.time_schedule_id + this.urlBottom
+      this.url = process.env.VUE_APP_SIGNAGE_VIEW_URL + this.$route.params.operation_rule_id + '/time-schedule/' + this.$route.params.time_schedule_id + this.urlBottom
     },
     getDestination() {
       if (this.time_schedule.destination == this.getOperationRuleIdList.YOKOHAMA_STATION) {

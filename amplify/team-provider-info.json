@@ -1,0 +1,23 @@
+{
+  "production": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-seabaasview-production-54757-authRole",
+      "UnauthRoleArn": "arn:aws:iam::010438487946:role/amplify-seabaasview-production-54757-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::010438487946:role/amplify-seabaasview-production-54757-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-seabaasview-production-54757-deployment",
+      "UnauthRoleName": "amplify-seabaasview-production-54757-unauthRole",
+      "StackName": "amplify-seabaasview-production-54757",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:010438487946:stack/amplify-seabaasview-production-54757/42e5ad90-4c39-11ef-9364-069478afcefd",
+      "AmplifyAppId": "d2enrxio54iqzn"
+    },
+    "categories": {
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d2enrxio54iqzn",
+          "type": "cicd"
+        }
+      }
+    }
+  }
+}
