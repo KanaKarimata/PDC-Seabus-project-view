@@ -3,6 +3,7 @@ import store from './store';
 import router from './router';
 import { toast } from 'bulma-toast'
 
+console.log(process.env.VUE_APP_API_URL)
 const axiosInstance = axios.create({
   baseURL: process.env.VUE_APP_API_URL + '/api', // Django REST FrameworkのAPIのベースURLを設定
   timeout: 1000,
