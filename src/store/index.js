@@ -74,10 +74,6 @@ export default createStore({
   actions: {
     async login({ commit }, credentials) {
       try {
-        console.log(process.env.VUE_APP_API_URL)
-        console.log(process.env.NODE_ENV)
-        console.log(process.env.VUE_APP_MODE)
-        console.log(process.env.VUE_APP_SIGNAGE_VIEW_URL)
         const response = await axiosInstance.post('/token/', credentials);
         commit('setTokens', response.data);
         commit('setAuthenticate');

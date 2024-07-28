@@ -6,7 +6,7 @@ import { toast } from 'bulma-toast'
 console.log(process.env.VUE_APP_API_URL)
 const axiosInstance = axios.create({
   baseURL: process.env.VUE_APP_API_URL + '/api', // Django REST FrameworkのAPIのベースURLを設定
-  timeout: 1000,
+  timeout: 10000,
 });
 
 axiosInstance.interceptors.request.use(
