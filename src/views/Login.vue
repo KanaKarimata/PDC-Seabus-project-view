@@ -1,6 +1,10 @@
 <template>
   <link rel="stylesheet" href="/css/logIn.css" type="text/css">
   <div class="page-log-in">
+    <VueElementLoading
+      :active="isLoading"
+      color="#F18900"
+      is-full-screen />
     <div class="columns log-in-area">
       <div class="column is-4 is-offset-4">
         <h1 class="title">シーバス 管理画面</h1>
@@ -39,6 +43,7 @@
 import axios from 'axios'
 import { toast } from 'bulma-toast'
 import { mapActions } from 'vuex';
+import VueElementLoading from "vue-element-loading";
 
 export default {
   name: 'Login',
@@ -46,8 +51,12 @@ export default {
     return {
       username: '',
       password: '',
-      errors: []
+      errors: [],
+      isLoading: false
     }
+  },
+  components: {
+    VueElementLoading
   },
   mounted() {
     document.title = 'Log in | シーバス'
@@ -67,6 +76,7 @@ export default {
       if (!this.errors.length) {
 
         try {
+          this.isLoading = true;
           await this.login({ username: this.username, password: this.password });
 
           // ログイン成功時の処理
@@ -93,6 +103,8 @@ export default {
             this.errors.push('エラーが発生しました。再度お試しください。');
             console.error('ログインエラー:', error);
           }
+        } finally {
+          this.isLoading = false;
         }
       }
     }
